@@ -1,0 +1,101 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isBootstrappedAdmin() {
+      return isSignedIn() && request.auth.token.email == 'AzozSindi23@gmail.com';
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        isBootstrappedAdmin() ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Site Settings
+    match /siteSettings/{settingId} {
+      allow read: true;
+      allow write: if isAdmin();
+    }
+
+    // Stations
+    match /stations/{stationId} {
+      allow read: if resource == null || resource.data.isPublished == true || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // Car Wash Branches
+    match /carWashBranches/{branchId} {
+      allow read: if resource == null || resource.data.isPublished == true || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // Car Wash Services
+    match /carWashServices/{serviceId} {
+      allow read: if resource == null || resource.data.isPublished == true || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // Partners Showcase
+    match /partners/{partnerId} {
+      allow read: if resource == null || resource.data.isPublished == true || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // News & Announcements
+    match /news/{newsId} {
+      allow read: if resource == null || resource.data.isPublished == true || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // Career Postings
+    match /careers/{careerId} {
+      allow read: if resource == null || resource.data.isPublished == true || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // Quotation Requests - Private to admins, public can create
+    match /quotationRequests/{quotationId} {
+      allow create: if isValidId(quotationId) &&
+        request.resource.data.contactName is string && request.resource.data.contactName.size() <= 100 &&
+        request.resource.data.companyName is string && request.resource.data.companyName.size() <= 120 &&
+        request.resource.data.businessEmail is string && request.resource.data.businessEmail.size() <= 100 &&
+        request.resource.data.telephoneNumber is string && request.resource.data.telephoneNumber.size() <= 30 &&
+        request.resource.data.productRequested is string && request.resource.data.productRequested.size() <= 80 &&
+        request.resource.data.quantity is string && request.resource.data.quantity.size() <= 50 &&
+        request.resource.data.status in ['pending', 'reviewing', 'contacted', 'archived'];
+      allow read, update, delete: if isAdmin();
+    }
+
+    // Contact Messages - Private to admins, public can create
+    match /contactMessages/{messageId} {
+      allow create: if isValidId(messageId) &&
+        request.resource.data.fullName is string && request.resource.data.fullName.size() <= 100 &&
+        request.resource.data.email is string && request.resource.data.email.size() <= 100 &&
+        request.resource.data.subject is string && request.resource.data.subject.size() <= 150 &&
+        request.resource.data.message is string && request.resource.data.message.size() <= 2000 &&
+        request.resource.data.status in ['new', 'read', 'replied', 'archived'];
+      allow read, update, delete: if isAdmin();
+    }
+
+    // Admin Profiles
+    match /admins/{adminId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+  }
+}

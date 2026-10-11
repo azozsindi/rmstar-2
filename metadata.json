@@ -1,0 +1,6 @@
+{
+  "name": "RM STAR — Enterprise Energy, Fuel Stations & Car Wash",
+  "description": "Enterprise corporate website, fuel station locator, diesel supply portal, vehicle care operations and secure administration CMS for RM STAR.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

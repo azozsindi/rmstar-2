@@ -1,0 +1,231 @@
+{
+  "entities": {
+    "SiteSettings": {
+      "title": "SiteSettings",
+      "description": "Global enterprise site settings and configurations",
+      "type": "object",
+      "properties": {
+        "companyNameAr": { "type": "string", "maxLength": 100 },
+        "companyNameEn": { "type": "string", "maxLength": 100 },
+        "officialEmail": { "type": "string", "maxLength": 100 },
+        "officialPhone": { "type": "string", "maxLength": 30 },
+        "officialWhatsApp": { "type": "string", "maxLength": 30 },
+        "headquartersAr": { "type": "string", "maxLength": 200 },
+        "headquartersEn": { "type": "string", "maxLength": 200 },
+        "commercialRegistration": { "type": "string", "maxLength": 50 },
+        "announcementAr": { "type": "string", "maxLength": 300 },
+        "announcementEn": { "type": "string", "maxLength": 300 },
+        "isAnnouncementActive": { "type": "boolean" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["companyNameAr", "companyNameEn", "updatedAt"]
+    },
+    "FuelStation": {
+      "title": "FuelStation",
+      "description": "RM STAR fuel and petroleum station location",
+      "type": "object",
+      "properties": {
+        "nameAr": { "type": "string", "maxLength": 120 },
+        "nameEn": { "type": "string", "maxLength": 120 },
+        "cityAr": { "type": "string", "maxLength": 60 },
+        "cityEn": { "type": "string", "maxLength": 60 },
+        "addressAr": { "type": "string", "maxLength": 250 },
+        "addressEn": { "type": "string", "maxLength": 250 },
+        "services": { "type": "array" },
+        "openingHoursAr": { "type": "string", "maxLength": 100 },
+        "openingHoursEn": { "type": "string", "maxLength": 100 },
+        "contactPhone": { "type": "string", "maxLength": 30 },
+        "mapUrl": { "type": "string", "maxLength": 500 },
+        "imageUrl": { "type": "string", "maxLength": 500 },
+        "isPublished": { "type": "boolean" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["nameAr", "nameEn", "cityAr", "cityEn", "isPublished", "createdAt", "updatedAt"]
+    },
+    "CarWashBranch": {
+      "title": "CarWashBranch",
+      "description": "RM STAR automated and precision vehicle care facility branch",
+      "type": "object",
+      "properties": {
+        "nameAr": { "type": "string", "maxLength": 120 },
+        "nameEn": { "type": "string", "maxLength": 120 },
+        "cityAr": { "type": "string", "maxLength": 60 },
+        "cityEn": { "type": "string", "maxLength": 60 },
+        "addressAr": { "type": "string", "maxLength": 250 },
+        "addressEn": { "type": "string", "maxLength": 250 },
+        "openingHoursAr": { "type": "string", "maxLength": 100 },
+        "openingHoursEn": { "type": "string", "maxLength": 100 },
+        "contactPhone": { "type": "string", "maxLength": 30 },
+        "mapUrl": { "type": "string", "maxLength": 500 },
+        "imageUrl": { "type": "string", "maxLength": 500 },
+        "isPublished": { "type": "boolean" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["nameAr", "nameEn", "cityAr", "cityEn", "isPublished", "createdAt", "updatedAt"]
+    },
+    "CarWashService": {
+      "title": "CarWashService",
+      "description": "Tiered vehicle detailing and high-pressure washing service package",
+      "type": "object",
+      "properties": {
+        "nameAr": { "type": "string", "maxLength": 100 },
+        "nameEn": { "type": "string", "maxLength": 100 },
+        "descriptionAr": { "type": "string", "maxLength": 500 },
+        "descriptionEn": { "type": "string", "maxLength": 500 },
+        "duration": { "type": "string", "maxLength": 50 },
+        "pricePlaceholder": { "type": "string", "maxLength": 50 },
+        "featuresAr": { "type": "array" },
+        "featuresEn": { "type": "array" },
+        "imageUrl": { "type": "string", "maxLength": 500 },
+        "isPublished": { "type": "boolean" },
+        "sortOrder": { "type": "number" }
+      },
+      "required": ["nameAr", "nameEn", "descriptionAr", "descriptionEn", "isPublished", "sortOrder"]
+    },
+    "Partner": {
+      "title": "Partner",
+      "description": "Enterprise partners, supplier conglomerates, and corporate relations",
+      "type": "object",
+      "properties": {
+        "nameAr": { "type": "string", "maxLength": 100 },
+        "nameEn": { "type": "string", "maxLength": 100 },
+        "logoUrl": { "type": "string", "maxLength": 500 },
+        "websiteUrl": { "type": "string", "maxLength": 300 },
+        "categoryAr": { "type": "string", "maxLength": 80 },
+        "categoryEn": { "type": "string", "maxLength": 80 },
+        "displayOrder": { "type": "number" },
+        "isPublished": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["nameAr", "nameEn", "isPublished", "displayOrder"]
+    },
+    "NewsArticle": {
+      "title": "NewsArticle",
+      "description": "Corporate news, energy operations press release, and official updates",
+      "type": "object",
+      "properties": {
+        "titleAr": { "type": "string", "maxLength": 200 },
+        "titleEn": { "type": "string", "maxLength": 200 },
+        "summaryAr": { "type": "string", "maxLength": 400 },
+        "summaryEn": { "type": "string", "maxLength": 400 },
+        "contentAr": { "type": "string", "maxLength": 5000 },
+        "contentEn": { "type": "string", "maxLength": 5000 },
+        "imageUrl": { "type": "string", "maxLength": 500 },
+        "publishedDate": { "type": "string", "maxLength": 50 },
+        "category": { "type": "string", "maxLength": 60 },
+        "isPublished": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["titleAr", "titleEn", "summaryAr", "summaryEn", "isPublished", "createdAt"]
+    },
+    "QuotationRequest": {
+      "title": "QuotationRequest",
+      "description": "Confidential B2B bulk diesel and energy quotation request",
+      "type": "object",
+      "properties": {
+        "contactName": { "type": "string", "maxLength": 100 },
+        "companyName": { "type": "string", "maxLength": 120 },
+        "businessEmail": { "type": "string", "maxLength": 100 },
+        "telephoneNumber": { "type": "string", "maxLength": 30 },
+        "country": { "type": "string", "maxLength": 60 },
+        "city": { "type": "string", "maxLength": 60 },
+        "productRequested": { "type": "string", "maxLength": 80 },
+        "quantity": { "type": "string", "maxLength": 50 },
+        "unit": { "type": "string", "maxLength": 30 },
+        "additionalRequirements": { "type": "string", "maxLength": 1500 },
+        "status": { "type": "string", "enum": ["pending", "reviewing", "contacted", "archived"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["contactName", "companyName", "businessEmail", "telephoneNumber", "productRequested", "quantity", "unit", "status", "createdAt"]
+    },
+    "ContactMessage": {
+      "title": "ContactMessage",
+      "description": "General corporate inquiry and communication submission",
+      "type": "object",
+      "properties": {
+        "fullName": { "type": "string", "maxLength": 100 },
+        "email": { "type": "string", "maxLength": 100 },
+        "phone": { "type": "string", "maxLength": 30 },
+        "subject": { "type": "string", "maxLength": 150 },
+        "message": { "type": "string", "maxLength": 2000 },
+        "status": { "type": "string", "enum": ["new", "read", "replied", "archived"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["fullName", "email", "subject", "message", "status", "createdAt"]
+    },
+    "CareerPosting": {
+      "title": "CareerPosting",
+      "description": "Corporate career opportunity at RM STAR",
+      "type": "object",
+      "properties": {
+        "titleAr": { "type": "string", "maxLength": 120 },
+        "titleEn": { "type": "string", "maxLength": 120 },
+        "departmentAr": { "type": "string", "maxLength": 80 },
+        "departmentEn": { "type": "string", "maxLength": 80 },
+        "locationAr": { "type": "string", "maxLength": 100 },
+        "locationEn": { "type": "string", "maxLength": 100 },
+        "type": { "type": "string", "maxLength": 50 },
+        "descriptionAr": { "type": "string", "maxLength": 3000 },
+        "descriptionEn": { "type": "string", "maxLength": 3000 },
+        "isPublished": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["titleAr", "titleEn", "departmentAr", "departmentEn", "isPublished", "createdAt"]
+    },
+    "AdminProfile": {
+      "title": "AdminProfile",
+      "description": "Designated administrator profile",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "maxLength": 100 },
+        "role": { "type": "string", "enum": ["superadmin", "editor"] },
+        "addedAt": { "type": "string" }
+      },
+      "required": ["email", "role", "addedAt"]
+    }
+  },
+  "firestore": {
+    "/siteSettings/{settingId}": {
+      "schema": "SiteSettings",
+      "description": "Global enterprise configuration and contact info"
+    },
+    "/stations/{stationId}": {
+      "schema": "FuelStation",
+      "description": "Directory of fuel and energy stations"
+    },
+    "/carWashBranches/{branchId}": {
+      "schema": "CarWashBranch",
+      "description": "Car wash service branch facilities"
+    },
+    "/carWashServices/{serviceId}": {
+      "schema": "CarWashService",
+      "description": "Vehicle care service catalog and packages"
+    },
+    "/partners/{partnerId}": {
+      "schema": "Partner",
+      "description": "Official business partners and corporate allies"
+    },
+    "/news/{newsId}": {
+      "schema": "NewsArticle",
+      "description": "Corporate news releases and articles"
+    },
+    "/quotationRequests/{quotationId}": {
+      "schema": "QuotationRequest",
+      "description": "Private commercial diesel quotation requests"
+    },
+    "/contactMessages/{messageId}": {
+      "schema": "ContactMessage",
+      "description": "Private customer contact inquiries"
+    },
+    "/careers/{careerId}": {
+      "schema": "CareerPosting",
+      "description": "Corporate career opportunities"
+    },
+    "/admins/{adminId}": {
+      "schema": "AdminProfile",
+      "description": "Authorized platform administrators"
+    }
+  }
+}
