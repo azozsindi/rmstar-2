@@ -32,25 +32,25 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab, onOpenA
 
   return (
     <header className="sticky top-0 z-50 bg-[#080808]/95 backdrop-blur-md border-b border-[#1C1C1C]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+      <div className="max-w-[1440px] mx-auto px-3 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-20 gap-2 lg:gap-4">
           {/* Logo */}
           <div
-            className="cursor-pointer transition-transform hover:scale-[1.01]"
+            className="cursor-pointer transition-transform hover:scale-[1.01] flex-shrink-0"
             onClick={() => handleNavClick('home')}
           >
             <Logo size="md" />
           </div>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
+          <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1 shrink min-w-0">
             {navItems.map((item) => {
               const isActive = activeTab === item.id;
               return (
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
-                  className={`px-3 py-2 text-xs xl:text-sm font-medium rounded-sm transition-all duration-200 relative ${
+                  className={`px-1.5 xl:px-2.5 py-1.5 text-[11px] xl:text-xs font-semibold rounded-sm transition-all duration-200 relative whitespace-nowrap shrink-0 ${
                     isActive
                       ? 'text-[#E2C98A]'
                       : 'text-[#A6A6A6] hover:text-[#F4F1E9] hover:bg-[#151515]'
@@ -65,38 +65,28 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab, onOpenA
             })}
           </nav>
 
-          {/* Right Action Controls: Lang Switcher, Admin Button, Quote CTA */}
-          <div className="hidden sm:flex items-center gap-3">
+          {/* Right Action Controls: Lang Switcher, Quote CTA (Admin access hidden to #adminrm) */}
+          <div className="hidden sm:flex items-center gap-1.5 xl:gap-2.5 shrink-0">
             {/* Language Switcher */}
             <button
               onClick={toggleLocale}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-sm border border-[#262626] text-[#F4F1E9] hover:border-[#C8A45D] hover:text-[#E2C98A] transition-colors"
+              className="flex items-center gap-1.5 px-2 py-1.5 text-[11px] font-semibold rounded-sm border border-[#262626] text-[#F4F1E9] hover:border-[#C8A45D] hover:text-[#E2C98A] transition-colors whitespace-nowrap shrink-0"
               title="Change Language"
             >
-              <Globe className="w-3.5 h-3.5 text-[#C8A45D]" />
-              <span>{locale === 'ar' ? 'English' : 'العربية'}</span>
+              <Globe className="w-3 h-3 text-[#C8A45D] shrink-0" />
+              <span className="whitespace-nowrap">{locale === 'ar' ? 'English' : 'العربية'}</span>
             </button>
 
-            {/* Admin Portal Gateway */}
-            <button
-              onClick={onOpenAdmin}
-              className="p-2 text-[#A6A6A6] hover:text-[#E2C98A] hover:bg-[#151515] rounded-sm transition-colors"
-              title={t('navAdmin')}
-              aria-label="Admin Portal"
-            >
-              <Shield className="w-4 h-4" />
-            </button>
-
-            {/* Request Quotation Primary CTA */}
+            {/* Request Quotation Primary CTA - Strictly One Line with Small Elegant Font */}
             <button
               onClick={() => handleNavClick('quote')}
-              className="flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-sm bg-gradient-to-r from-[#C8A45D] to-[#E2C98A] text-[#080808] hover:shadow-[0_0_15px_rgba(200,164,93,0.4)] transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+              className="inline-flex items-center justify-center gap-1.5 px-2.5 xl:px-3 py-1.5 text-[10px] xl:text-[11px] font-bold rounded-sm bg-gradient-to-r from-[#C8A45D] to-[#E2C98A] text-[#080808] hover:shadow-[0_0_15px_rgba(200,164,93,0.4)] transition-all transform hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap shrink-0 cursor-pointer min-w-max leading-none"
             >
-              <span>{t('navQuoteBtn')}</span>
+              <span className="whitespace-nowrap tracking-tight">{t('navQuoteBtn')}</span>
               {locale === 'ar' ? (
-                <ArrowLeft className="w-3.5 h-3.5" />
+                <ArrowLeft className="w-3 h-3 shrink-0" />
               ) : (
-                <ArrowRight className="w-3.5 h-3.5" />
+                <ArrowRight className="w-3 h-3 shrink-0" />
               )}
             </button>
           </div>
@@ -137,22 +127,12 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab, onOpenA
             </button>
           ))}
 
-          <div className="pt-4 border-t border-[#222] flex flex-col gap-2.5">
+          <div className="pt-4 border-t border-[#222]">
             <button
               onClick={() => handleNavClick('quote')}
               className="w-full py-2.5 text-center text-sm font-semibold rounded-sm bg-gradient-to-r from-[#C8A45D] to-[#E2C98A] text-[#080808]"
             >
               {t('navQuoteBtn')}
-            </button>
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onOpenAdmin();
-              }}
-              className="w-full flex items-center justify-center gap-2 py-2 text-xs font-medium text-[#A6A6A6] hover:text-[#E2C98A] border border-[#222] rounded-sm"
-            >
-              <Shield className="w-3.5 h-3.5 text-[#C8A45D]" />
-              <span>{t('navAdmin')}</span>
             </button>
           </div>
         </div>

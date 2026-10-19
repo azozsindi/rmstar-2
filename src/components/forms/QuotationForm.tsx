@@ -223,17 +223,20 @@ export const QuotationForm: React.FC<QuotationFormProps> = ({ compact = false })
             onChange={(e) => setProductRequested(e.target.value)}
             className="w-full px-3 py-2.5 bg-[#181818] border border-[#2C2C2C] focus:border-[#C8A45D] rounded-sm text-sm text-[#F4F1E9] outline-none transition-colors cursor-pointer"
           >
-            <option value="ديزل تجاري منخفض الكبريت (Ultra-Low Sulfur Diesel)">
-              {locale === 'ar' ? 'ديزل منخفض الكبريت (Euro 5)' : 'Ultra-Low Sulfur Diesel (Euro 5)'}
+            <option value="نقل وتوريد ديزل للمصانع والشركات">
+              {locale === 'ar' ? 'نقل وتوريد ديزل للشركات والمصانع' : 'Commercial Fuel Supply & Transport for Factories'}
             </option>
-            <option value="ديزل قطاع صناعي ومولدات (Industrial Diesel)">
-              {locale === 'ar' ? 'ديزل صناعي للمولدات والمصانع' : 'Industrial Generator Fuel'}
+            <option value="ديزل تجاري منخفض الكبريت (Euro 5)">
+              {locale === 'ar' ? 'ديزل منخفض الكبريت فائق الجودة (Euro 5)' : 'Ultra-Low Sulfur Diesel (Euro 5)'}
             </option>
-            <option value="عقود توريد أساطيل شهرية وسنوية">
-              {locale === 'ar' ? 'عقود توريد أساطيل ونقل ثقيل' : 'Commercial Fleet Bulk Fuel Contract'}
+            <option value="توريد صهاريج ودينات لمواقع العمل">
+              {locale === 'ar' ? 'توريد صهاريج ودينات لمواقع العمل والمشروعات' : 'Tanker & Dina Transport to On-site Tanks'}
             </option>
-            <option value="توريد محطات وخزانات استراتيجية">
-              {locale === 'ar' ? 'توريد خزانات استراتيجية ومشاريع' : 'Mega Project On-site Tank Supplies'}
+            <option value="ديزل قطاع صناعي ومولدات طاقة">
+              {locale === 'ar' ? 'ديزل صناعي للمولدات والمعدات الثقيلة' : 'Industrial Diesel for Heavy Machinery & Generators'}
+            </option>
+            <option value="عقود توريد ونقل وقود شهرية وسنوية">
+              {locale === 'ar' ? 'عقود نقل وقود دورية للأساطيل والشركات' : 'Long-term Corporate Fleet Fuel Contracts'}
             </option>
           </select>
         </div>

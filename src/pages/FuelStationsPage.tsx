@@ -15,9 +15,10 @@ import {
 interface FuelStationsPageProps {
   stations: FuelStation[];
   setActiveTab: (tab: string) => void;
+  settings?: import('../types').SiteSettings;
 }
 
-export const FuelStationsPage: React.FC<FuelStationsPageProps> = ({ stations }) => {
+export const FuelStationsPage: React.FC<FuelStationsPageProps> = ({ stations, settings }) => {
   const { locale, t } = useLanguage();
   const isRtl = locale === 'ar';
 
@@ -58,11 +59,11 @@ export const FuelStationsPage: React.FC<FuelStationsPageProps> = ({ stations }) 
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-black text-[#F4F1E9] tracking-tight">
-            {t('stationsTitle')}
+            {(isRtl ? settings?.stationsPageTitleAr : settings?.stationsPageTitleEn) || t('stationsTitle')}
           </h1>
 
           <p className="text-sm sm:text-base text-[#A6A6A6] max-w-2xl mx-auto">
-            {t('stationsSubtitle')}
+            {(isRtl ? settings?.stationsPageSubtitleAr : settings?.stationsPageSubtitleEn) || t('stationsSubtitle')}
           </p>
 
           {/* Search & Filter Bar */}

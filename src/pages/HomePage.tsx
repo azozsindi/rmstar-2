@@ -43,84 +43,94 @@ export const HomePage: React.FC<HomePageProps> = ({
   const publishedPartners = partners.filter((p) => p.isPublished);
   const publishedNews = news.filter((n) => n.isPublished).slice(0, 2);
 
+  // Default ultra-clear diesel tanker truck image for corporate fleet
+  const DEFAULT_TANKER_HERO =
+    'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=2560&q=95';
+
+  const heroBg = settings.heroImageUrl || DEFAULT_TANKER_HERO;
+
   return (
     <div className="space-y-24 pb-20">
       {/* 1. CINEMATIC HERO SECTION */}
-      <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden border-b border-[#1C1C1C]">
-        {/* Cinematic Backdrop Image with Dark Luxury Gradients */}
+      <section className="relative min-h-[92vh] flex items-center justify-center overflow-hidden border-b border-[#1C1C1C]">
+        {/* Crystal-Clear 4K Backdrop Image of Diesel Tanker Truck */}
         <div className="absolute inset-0 z-0">
           <img
-            src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=2000&q=85"
-            alt="RM STAR Energy & Industrial Petroleum Logistics"
-            className="w-full h-full object-cover object-center opacity-30 filter brightness-75 scale-105 transform animate-pulse duration-10000"
+            src={heroBg}
+            alt="RM STAR Diesel Loading & Delivery Tanker Truck"
+            className="w-full h-full object-cover object-[center_50%] opacity-90 transition-all duration-700 ease-out transform scale-100 contrast-[1.05] brightness-[1.02]"
           />
-          {/* Subtle Multi-Layer Luxury Vignette */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-[#080808]/80 to-[#080808]/90" />
-          <div className="absolute inset-0 bg-radial-[at_center] from-transparent via-[#080808]/50 to-[#080808]" />
-          {/* Subtle gold ambient glow */}
-          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#C8A45D]/10 blur-[130px] rounded-full pointer-events-none" />
+          {/* Subtle Balanced Vignette preserving image sharpness while keeping text crystal clear */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#080808]/85 via-[#080808]/40 to-[#080808]/90 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#080808]/80 via-transparent to-[#080808]/80 pointer-events-none" />
+          {/* Ambient warm gold subtle glow */}
+          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-[#C8A45D]/10 blur-[140px] rounded-full pointer-events-none" />
         </div>
 
         {/* Hero Content */}
-        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20 pb-16">
+        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-24 pb-16">
           {/* Gold Badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#181818]/90 border border-[#C8A45D]/40 text-[#E2C98A] text-xs font-semibold mb-6 shadow-lg backdrop-blur-sm">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#080808]/85 border border-[#C8A45D]/60 text-[#E2C98A] text-xs font-semibold mb-6 shadow-xl backdrop-blur-md">
             <Sparkles className="w-3.5 h-3.5 text-[#C8A45D]" />
-            <span>{t('heroBadge')}</span>
+            <span>{(isRtl ? settings.heroBadgeAr : settings.heroBadgeEn) || t('heroBadge')}</span>
           </div>
 
-          {/* Main Title */}
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-[#F4F1E9] leading-tight sm:leading-tight md:leading-tight mb-6">
-            <span className="font-serif-luxury">{t('heroTitle')}</span>
+          {/* Main Title with Drop Shadow for 100% Crisp Legibility */}
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-[#F4F1E9] leading-tight sm:leading-tight md:leading-tight mb-6 drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)]">
+            <span className="font-serif-luxury">
+              {(isRtl ? settings.heroTitleAr : settings.heroTitleEn) || t('heroTitle')}
+            </span>
           </h1>
 
           {/* Subtitle / Description */}
-          <p className="text-base sm:text-lg md:text-xl text-[#B0B0B0] max-w-3xl mx-auto leading-relaxed mb-10 font-normal">
-            {t('heroDesc')}
+          <p className="text-base sm:text-lg md:text-xl text-[#F4F1E9] max-w-3xl mx-auto leading-relaxed mb-8 font-medium drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+            {(isRtl ? settings.heroDescAr : settings.heroDescEn) || t('heroDesc')}
           </p>
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <button
               onClick={() => setActiveTab('quote')}
-              className="w-full sm:w-auto px-8 py-3.5 rounded-sm bg-gradient-to-r from-[#C8A45D] via-[#E2C98A] to-[#C8A45D] text-[#080808] font-bold text-sm tracking-wide hover:shadow-[0_0_25px_rgba(200,164,93,0.5)] transition-all transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-6 sm:px-8 py-3.5 rounded-sm bg-gradient-to-r from-[#C8A45D] via-[#E2C98A] to-[#C8A45D] text-[#080808] font-bold text-xs sm:text-sm tracking-wide shadow-[0_4px_20px_rgba(0,0,0,0.8)] hover:shadow-[0_0_25px_rgba(200,164,93,0.6)] transition-all transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap shrink-0"
             >
-              <span>{t('heroCtaQuote')}</span>
-              {isRtl ? <ArrowLeft className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
+              <span className="whitespace-nowrap">
+                {(isRtl ? settings.heroCtaQuoteAr : settings.heroCtaQuoteEn) || t('heroCtaQuote')}
+              </span>
+              {isRtl ? <ArrowLeft className="w-4 h-4 shrink-0" /> : <ArrowRight className="w-4 h-4 shrink-0" />}
             </button>
 
             <button
               onClick={() => setActiveTab('diesel')}
-              className="w-full sm:w-auto px-8 py-3.5 rounded-sm bg-[#121212] border border-[#2E2E2E] hover:border-[#C8A45D] text-[#F4F1E9] hover:text-[#E2C98A] font-semibold text-sm transition-all cursor-pointer"
+              className="w-full sm:w-auto px-6 sm:px-8 py-3.5 rounded-sm bg-[#080808]/85 backdrop-blur-md border border-[#C8A45D]/60 hover:border-[#E2C98A] text-[#F4F1E9] hover:text-[#E2C98A] font-semibold text-xs sm:text-sm transition-all shadow-lg cursor-pointer whitespace-nowrap shrink-0"
             >
-              {t('heroCtaServices')}
+              {(isRtl ? settings.heroCtaServicesAr : settings.heroCtaServicesEn) || t('heroCtaServices')}
             </button>
           </div>
 
           {/* Enterprise Metrics Bar */}
-          <div className="grid grid-cols-3 gap-4 sm:gap-8 max-w-3xl mx-auto mt-16 pt-8 border-t border-[#1C1C1C]">
+          <div className="grid grid-cols-3 gap-4 sm:gap-8 max-w-3xl mx-auto mt-12 pt-8 border-t border-[#262626]/80 bg-[#080808]/60 backdrop-blur-md px-6 py-4 rounded-sm border">
             <div className="text-center">
               <div className="text-2xl sm:text-3xl font-extrabold gold-gradient-text font-mono">
-                {t('heroMetric1Value')}
+                {settings.metric1Val || t('heroMetric1Value')}
               </div>
-              <div className="text-[11px] sm:text-xs text-[#8A8A8A] mt-1 font-medium">
-                {t('heroMetric1Label')}
+              <div className="text-[11px] sm:text-xs text-[#B5B5B5] mt-1 font-medium">
+                {(isRtl ? settings.metric1LabelAr : settings.metric1LabelEn) || t('heroMetric1Label')}
               </div>
             </div>
-            <div className="text-center border-x border-[#1C1C1C]">
+            <div className="text-center border-x border-[#2A2A2A]">
               <div className="text-2xl sm:text-3xl font-extrabold text-[#F4F1E9] font-mono">
-                {t('heroMetric2Value')}
+                {settings.metric2Val || t('heroMetric2Value')}
               </div>
-              <div className="text-[11px] sm:text-xs text-[#8A8A8A] mt-1 font-medium">
-                {t('heroMetric2Label')}
+              <div className="text-[11px] sm:text-xs text-[#B5B5B5] mt-1 font-medium">
+                {(isRtl ? settings.metric2LabelAr : settings.metric2LabelEn) || t('heroMetric2Label')}
               </div>
             </div>
             <div className="text-center">
               <div className="text-2xl sm:text-3xl font-extrabold text-[#E2C98A] font-mono">
-                {t('heroMetric3Value')}
+                {settings.metric3Val || t('heroMetric3Value')}
               </div>
-              <div className="text-[11px] sm:text-xs text-[#8A8A8A] mt-1 font-medium">
-                {t('heroMetric3Label')}
+              <div className="text-[11px] sm:text-xs text-[#B5B5B5] mt-1 font-medium">
+                {(isRtl ? settings.metric3LabelAr : settings.metric3LabelEn) || t('heroMetric3Label')}
               </div>
             </div>
           </div>
@@ -134,10 +144,10 @@ export const HomePage: React.FC<HomePageProps> = ({
             RM STAR PORTFOLIO
           </span>
           <h2 className="text-2xl sm:text-4xl font-extrabold text-[#F4F1E9] mb-4">
-            {t('sectorsTitle')}
+            {(isRtl ? settings.sectorsTitleAr : settings.sectorsTitleEn) || t('sectorsTitle')}
           </h2>
           <p className="text-sm sm:text-base text-[#8A8A8A] leading-relaxed">
-            {t('sectorsSubtitle')}
+            {(isRtl ? settings.sectorsSubtitleAr : settings.sectorsSubtitleEn) || t('sectorsSubtitle')}
           </p>
         </div>
 
@@ -146,7 +156,7 @@ export const HomePage: React.FC<HomePageProps> = ({
           <div className="group relative bg-[#121212] border border-[#202020] hover:border-[#C8A45D]/60 rounded-sm overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(0,0,0,0.5)] flex flex-col justify-between">
             <div className="relative h-48 overflow-hidden">
               <img
-                src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80"
+                src={settings.sector1ImageUrl || 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80'}
                 alt="Diesel Supply"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 filter brightness-90"
               />
@@ -158,10 +168,10 @@ export const HomePage: React.FC<HomePageProps> = ({
             <div className="p-6 flex-1 flex flex-col justify-between">
               <div>
                 <h3 className="text-lg font-bold text-[#F4F1E9] mb-3 group-hover:text-[#E2C98A] transition-colors">
-                  {t('sector1Title')}
+                  {(isRtl ? settings.sector1TitleAr : settings.sector1TitleEn) || t('sector1Title')}
                 </h3>
                 <p className="text-xs sm:text-sm text-[#8A8A8A] leading-relaxed mb-6">
-                  {t('sector1Desc')}
+                  {(isRtl ? settings.sector1DescAr : settings.sector1DescEn) || t('sector1Desc')}
                 </p>
               </div>
               <button
@@ -178,7 +188,7 @@ export const HomePage: React.FC<HomePageProps> = ({
           <div className="group relative bg-[#121212] border border-[#202020] hover:border-[#C8A45D]/60 rounded-sm overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(0,0,0,0.5)] flex flex-col justify-between">
             <div className="relative h-48 overflow-hidden">
               <img
-                src="https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=800&q=80"
+                src={settings.sector2ImageUrl || 'https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=800&q=80'}
                 alt="Fuel Stations"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 filter brightness-90"
               />
@@ -190,10 +200,10 @@ export const HomePage: React.FC<HomePageProps> = ({
             <div className="p-6 flex-1 flex flex-col justify-between">
               <div>
                 <h3 className="text-lg font-bold text-[#F4F1E9] mb-3 group-hover:text-[#E2C98A] transition-colors">
-                  {t('sector2Title')}
+                  {(isRtl ? settings.sector2TitleAr : settings.sector2TitleEn) || t('sector2Title')}
                 </h3>
                 <p className="text-xs sm:text-sm text-[#8A8A8A] leading-relaxed mb-6">
-                  {t('sector2Desc')}
+                  {(isRtl ? settings.sector2DescAr : settings.sector2DescEn) || t('sector2Desc')}
                 </p>
               </div>
               <button
@@ -210,7 +220,7 @@ export const HomePage: React.FC<HomePageProps> = ({
           <div className="group relative bg-[#121212] border border-[#202020] hover:border-[#C8A45D]/60 rounded-sm overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(0,0,0,0.5)] flex flex-col justify-between">
             <div className="relative h-48 overflow-hidden">
               <img
-                src="https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=800&q=80"
+                src={settings.sector3ImageUrl || 'https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=800&q=80'}
                 alt="Car Wash & Detailing"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 filter brightness-90"
               />
@@ -222,10 +232,10 @@ export const HomePage: React.FC<HomePageProps> = ({
             <div className="p-6 flex-1 flex flex-col justify-between">
               <div>
                 <h3 className="text-lg font-bold text-[#F4F1E9] mb-3 group-hover:text-[#E2C98A] transition-colors">
-                  {t('sector3Title')}
+                  {(isRtl ? settings.sector3TitleAr : settings.sector3TitleEn) || t('sector3Title')}
                 </h3>
                 <p className="text-xs sm:text-sm text-[#8A8A8A] leading-relaxed mb-6">
-                  {t('sector3Desc')}
+                  {(isRtl ? settings.sector3DescAr : settings.sector3DescEn) || t('sector3Desc')}
                 </p>
               </div>
               <button
@@ -339,9 +349,23 @@ export const HomePage: React.FC<HomePageProps> = ({
             {publishedServices.map((srv) => (
               <div
                 key={srv.id}
-                className="bg-[#141414] border border-[#242424] hover:border-[#C8A45D]/50 rounded-sm p-6 flex flex-col justify-between transition-colors"
+                className="group bg-[#141414] border border-[#242424] hover:border-[#C8A45D]/60 rounded-sm overflow-hidden flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
               >
-                <div>
+                {srv.imageUrl && (
+                  <div className="relative h-44 overflow-hidden">
+                    <img
+                      src={srv.imageUrl}
+                      alt={isRtl ? srv.nameAr : srv.nameEn}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 filter brightness-90"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#141414] via-transparent to-transparent" />
+                    <div className="absolute top-3 end-3 flex items-center gap-1.5 px-2.5 py-1 bg-[#080808]/90 border border-[#C8A45D]/40 text-[#E2C98A] text-[11px] font-semibold rounded-sm">
+                      <Clock className="w-3 h-3 text-[#C8A45D]" />
+                      <span>{srv.duration}</span>
+                    </div>
+                  </div>
+                )}
+                <div className="p-6 flex-1 flex flex-col justify-between">
                   <div className="flex items-center justify-between mb-4">
                     <span className="text-xs font-semibold px-2 py-1 bg-[#1A1A1A] border border-[#333] text-[#E2C98A] rounded-sm flex items-center gap-1.5">
                       <Clock className="w-3 h-3 text-[#C8A45D]" />

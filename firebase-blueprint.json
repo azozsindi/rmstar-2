@@ -16,6 +16,7 @@
         "announcementAr": { "type": "string", "maxLength": 300 },
         "announcementEn": { "type": "string", "maxLength": 300 },
         "isAnnouncementActive": { "type": "boolean" },
+        "heroImageUrl": { "type": "string", "maxLength": 500 },
         "updatedAt": { "type": "string" }
       },
       "required": ["companyNameAr", "companyNameEn", "updatedAt"]

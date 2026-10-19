@@ -23,6 +23,7 @@ import { TermsPage } from './pages/TermsPage';
 import { QuotationForm } from './components/forms/QuotationForm';
 import { AdminDashboard } from './pages/admin/AdminDashboard';
 import { AdminLoginModal } from './pages/admin/AdminLoginModal';
+import { MessageCircle } from 'lucide-react';
 import {
   SiteSettings,
   FuelStation,
@@ -30,6 +31,7 @@ import {
   CarWashService,
   Partner,
   NewsArticle,
+  CareerPosting,
   QuotationRequest,
   ContactMessage,
 } from './types';
@@ -40,6 +42,7 @@ import {
   getCarWashServices,
   getPartners,
   getNewsArticles,
+  getCareers,
   getQuotationRequests,
   getContactMessages,
   DEFAULT_SITE_SETTINGS,
@@ -48,6 +51,7 @@ import {
   DEFAULT_SERVICES,
   DEFAULT_PARTNERS,
   DEFAULT_NEWS,
+  DEFAULT_CAREERS,
 } from './services/db';
 import { testConnection } from './firebase/config';
 
@@ -65,10 +69,11 @@ const MainContent: React.FC = () => {
   const [services, setServices] = useState<CarWashService[]>(DEFAULT_SERVICES);
   const [partners, setPartners] = useState<Partner[]>(DEFAULT_PARTNERS);
   const [news, setNews] = useState<NewsArticle[]>(DEFAULT_NEWS);
+  const [careers, setCareers] = useState<CareerPosting[]>(DEFAULT_CAREERS);
   const [quotations, setQuotations] = useState<QuotationRequest[]>([]);
   const [messages, setMessages] = useState<ContactMessage[]>([]);
 
-  // Load and sync from Firestore
+  // Load and sync from Firestore & localStorage
   useEffect(() => {
     async function loadData() {
       // 1. Connection check
@@ -118,6 +123,13 @@ const MainContent: React.FC = () => {
       }
 
       try {
+        const cr = await getCareers();
+        if (cr && cr.length) setCareers(cr);
+      } catch {
+        // use fallback
+      }
+
+      try {
         const qr = await getQuotationRequests();
         setQuotations(qr);
       } catch {
@@ -135,6 +147,37 @@ const MainContent: React.FC = () => {
     loadData();
   }, []);
 
+  // Listen to URL hash for #adminrm access (e.g. https://www.rmstar.online#adminrm)
+  useEffect(() => {
+    const handleHash = () => {
+      const hash = window.location.hash.toLowerCase();
+      if (hash === '#adminrm' || hash === '#/adminrm') {
+        if (isAdmin) {
+          setActiveTab('admin');
+        } else {
+          setIsAdminModalOpen(true);
+        }
+      }
+    };
+
+    handleHash();
+    window.addEventListener('hashchange', handleHash);
+
+    // Optional keyboard shortcut: Alt + A or Ctrl + Shift + A
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.altKey && e.key.toLowerCase() === 'a') || (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'a')) {
+        e.preventDefault();
+        window.location.hash = 'adminrm';
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('hashchange', handleHash);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isAdmin]);
+
   const handleOpenAdmin = () => {
     if (isAdmin) {
       setActiveTab('admin');
@@ -143,9 +186,25 @@ const MainContent: React.FC = () => {
     }
   };
 
+  const handleCloseAdminModal = () => {
+    setIsAdminModalOpen(false);
+    const hash = window.location.hash.toLowerCase();
+    if (hash === '#adminrm' || hash === '#/adminrm') {
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+  };
+
   const handleAdminLoginSuccess = () => {
     setIsAdminModalOpen(false);
     setActiveTab('admin');
+  };
+
+  const handleCloseAdminDashboard = () => {
+    setActiveTab('home');
+    const hash = window.location.hash.toLowerCase();
+    if (hash === '#adminrm' || hash === '#/adminrm') {
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
   };
 
   // If in admin mode and user is authorized, display the full admin CMS
@@ -164,11 +223,13 @@ const MainContent: React.FC = () => {
         setPartners={setPartners}
         news={news}
         setNews={setNews}
+        careers={careers}
+        setCareers={setCareers}
         quotations={quotations}
         setQuotations={setQuotations}
         messages={messages}
         setMessages={setMessages}
-        onClose={() => setActiveTab('home')}
+        onClose={handleCloseAdminDashboard}
       />
     );
   }
@@ -198,10 +259,10 @@ const MainContent: React.FC = () => {
           />
         )}
 
-        {activeTab === 'diesel' && <DieselSupplyPage />}
+        {activeTab === 'diesel' && <DieselSupplyPage settings={settings} />}
 
         {activeTab === 'stations' && (
-          <FuelStationsPage stations={stations} setActiveTab={setActiveTab} />
+          <FuelStationsPage stations={stations} setActiveTab={setActiveTab} settings={settings} />
         )}
 
         {activeTab === 'carwash' && (
@@ -209,10 +270,11 @@ const MainContent: React.FC = () => {
             branches={branches}
             services={services}
             setActiveTab={setActiveTab}
+            settings={settings}
           />
         )}
 
-        {activeTab === 'about' && <AboutPage />}
+        {activeTab === 'about' && <AboutPage settings={settings} />}
 
         {activeTab === 'partners' && (
           <PartnersPage partners={partners} setActiveTab={setActiveTab} />
@@ -220,7 +282,7 @@ const MainContent: React.FC = () => {
 
         {activeTab === 'news' && <NewsPage news={news} />}
 
-        {activeTab === 'careers' && <CareersPage />}
+        {activeTab === 'careers' && <CareersPage careers={careers} settings={settings} />}
 
         {activeTab === 'contact' && <ContactPage settings={settings} />}
 
@@ -241,9 +303,9 @@ const MainContent: React.FC = () => {
           </div>
         )}
 
-        {activeTab === 'privacy' && <PrivacyPolicyPage />}
+        {activeTab === 'privacy' && <PrivacyPolicyPage settings={settings} />}
 
-        {activeTab === 'terms' && <TermsPage />}
+        {activeTab === 'terms' && <TermsPage settings={settings} />}
       </main>
 
       {/* Corporate Footer */}
@@ -253,17 +315,37 @@ const MainContent: React.FC = () => {
         onOpenAdmin={handleOpenAdmin}
       />
 
-      {/* Authentication Modal */}
+      {/* Admin Login Dialog - Access via https://www.rmstar.online#adminrm */}
       <AdminLoginModal
         isOpen={isAdminModalOpen}
-        onClose={() => setIsAdminModalOpen(false)}
+        onClose={handleCloseAdminModal}
         onSuccess={handleAdminLoginSuccess}
       />
+
+      {/* Floating Instant WhatsApp Channel */}
+      <a
+        href={`https://wa.me/${
+          settings.officialWhatsApp.replace(/[^0-9]/g, '').startsWith('05')
+            ? '966' + settings.officialWhatsApp.replace(/[^0-9]/g, '').substring(1)
+            : settings.officialWhatsApp.replace(/[^0-9]/g, '')
+        }?text=${encodeURIComponent(
+          'السلام عليكم، أود الاستفسار عن طلب وتوريد كميات وقود ديزل تجاري من شركة آر إم ستار.'
+        )}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Direct WhatsApp Fuel Support"
+        className="fixed bottom-6 end-6 z-40 p-3.5 rounded-full bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white shadow-[0_4px_25px_rgba(37,211,102,0.4)] hover:shadow-[0_0_30px_rgba(37,211,102,0.7)] transform hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center group"
+      >
+        <MessageCircle className="w-6 h-6" />
+        <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300 ease-in-out text-xs font-bold px-0 group-hover:px-2">
+          {t('contactWhatsAppBtn')}
+        </span>
+      </a>
     </div>
   );
 };
 
-export default function App() {
+export function App() {
   return (
     <LanguageProvider>
       <AuthProvider>
@@ -272,3 +354,5 @@ export default function App() {
     </LanguageProvider>
   );
 }
+
+export default App;

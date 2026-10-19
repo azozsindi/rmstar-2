@@ -190,14 +190,6 @@ export const Footer: React.FC<FooterProps> = ({ settings, setActiveTab, onOpenAd
             </button>
             <span>&bull;</span>
             <button
-              onClick={onOpenAdmin}
-              className="flex items-center gap-1 text-[#666] hover:text-[#C8A45D] transition-colors"
-            >
-              <FileText className="w-3 h-3" />
-              <span>CMS</span>
-            </button>
-            <span>&bull;</span>
-            <button
               onClick={scrollToTop}
               className="p-1.5 rounded-sm bg-[#151515] hover:bg-[#222] text-[#E2C98A] transition-colors"
               title="Back to Top"

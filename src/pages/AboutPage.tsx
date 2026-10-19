@@ -1,10 +1,43 @@
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import { SiteSettings } from '../types';
 import { Shield, Eye, Target, Award, CheckCircle, Sparkles } from 'lucide-react';
 
-export const AboutPage: React.FC = () => {
+interface AboutPageProps {
+  settings?: SiteSettings;
+}
+
+export const AboutPage: React.FC<AboutPageProps> = ({ settings }) => {
   const { locale, t } = useLanguage();
   const isRtl = locale === 'ar';
+
+  const title = (isRtl ? settings?.aboutTitleAr : settings?.aboutTitleEn) || t('aboutTitle');
+  const subtitle = (isRtl ? settings?.aboutSubtitleAr : settings?.aboutSubtitleEn) || t('aboutSubtitle');
+
+  const overview1 = (isRtl ? settings?.aboutOverviewAr : settings?.aboutOverviewEn) || (isRtl
+    ? 'تأسست شركة آر إم ستار لتقديم نموذج تشغيلي حديث يرتقي بقطاع استيراد وتوريد الوقود والديزل، وتطوير محطات الخدمة البترولية لتكون منصات لوجستية وخدمية متكاملة تخدم التنمية الاقتصادية والصناعية.'
+    : 'RM STAR was established to introduce an institutional standard in bulk fuel import, commercial distribution, and modern service station infrastructure, catering to industrial conglomerates and commercial transport corridors.');
+
+  const overview2 = (isRtl ? settings?.aboutOverview2Ar : settings?.aboutOverview2En) || (isRtl
+    ? 'نعمل وفق منظومة حوكمة صارمة تضمن الالتزام بالمواصفات القياسية، دقة الجداول الزمنية، وتوفير تجربة استثنائية لعملائنا في محطات الوقود ومراكز العناية بالمركبات.'
+    : 'Our operations are anchored on strict governance, chemical compliance, and delivery punctuality, creating dependable value for institutional partners and road users alike.');
+
+  const visionTitle = (isRtl ? settings?.aboutVisionTitleAr : settings?.aboutVisionTitleEn) || t('aboutVisionTitle');
+  const visionDesc = (isRtl ? settings?.aboutVisionDescAr : settings?.aboutVisionDescEn) || t('aboutVisionDesc');
+
+  const missionTitle = (isRtl ? settings?.aboutMissionTitleAr : settings?.aboutMissionTitleEn) || t('aboutMissionTitle');
+  const missionDesc = (isRtl ? settings?.aboutMissionDescAr : settings?.aboutMissionDescEn) || t('aboutMissionDesc');
+
+  const val1Title = (isRtl ? settings?.aboutVal1TitleAr : settings?.aboutVal1TitleEn) || t('val1Title');
+  const val1Desc = (isRtl ? settings?.aboutVal1DescAr : settings?.aboutVal1DescEn) || t('val1Desc');
+
+  const val2Title = (isRtl ? settings?.aboutVal2TitleAr : settings?.aboutVal2TitleEn) || t('val2Title');
+  const val2Desc = (isRtl ? settings?.aboutVal2DescAr : settings?.aboutVal2DescEn) || t('val2Desc');
+
+  const val3Title = (isRtl ? settings?.aboutVal3TitleAr : settings?.aboutVal3TitleEn) || t('val3Title');
+  const val3Desc = (isRtl ? settings?.aboutVal3DescAr : settings?.aboutVal3DescEn) || t('val3Desc');
+
+  const aboutImage = settings?.aboutImageUrl || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80';
 
   return (
     <div className="space-y-20 pb-20">
@@ -17,11 +50,11 @@ export const AboutPage: React.FC = () => {
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-black text-[#F4F1E9] tracking-tight">
-            {t('aboutTitle')}
+            {title}
           </h1>
 
           <p className="text-sm sm:text-base text-[#A6A6A6] max-w-2xl mx-auto leading-relaxed">
-            {t('aboutSubtitle')}
+            {subtitle}
           </p>
         </div>
       </section>
@@ -33,20 +66,16 @@ export const AboutPage: React.FC = () => {
             <span className="text-xs font-bold uppercase tracking-widest text-[#C8A45D] block">
               {isRtl ? 'نبذة عن المنظومة' : 'Executive Overview'}
             </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#F4F1E9]">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#F4F1E9] leading-snug">
               {isRtl
                 ? 'آر إم ستار: شريك استراتيجي في سلاسل إمداد الطاقة والخدمات المساندة'
                 : 'RM STAR: Strategic Energy Supply Chains & Integrated Downstream Operations'}
             </h2>
             <p className="text-sm text-[#A6A6A6] leading-relaxed">
-              {isRtl
-                ? 'تأسست شركة آر إم ستار لتقديم نموذج تشغيلي حديث يرتقي بقطاع استيراد وتوريد الوقود والديزل، وتطوير محطات الخدمة البترولية لتكون منصات لوجستية وخدمية متكاملة تخدم التنمية الاقتصادية والصناعية.'
-                : 'RM STAR was established to introduce an institutional standard in bulk fuel import, commercial distribution, and modern service station infrastructure, catering to industrial conglomerates and commercial transport corridors.'}
+              {overview1}
             </p>
             <p className="text-sm text-[#A6A6A6] leading-relaxed">
-              {isRtl
-                ? 'نعمل وفق منظومة حوكمة صارمة تضمن الالتزام بالمواصفات القياسية، دقة الجداول الزمنية، وتوفير تجربة استثنائية لعملائنا في محطات الوقود ومراكز العناية بالمركبات.'
-                : 'Our operations are anchored on strict governance, chemical compliance, and delivery punctuality, creating dependable value for institutional partners and road users alike.'}
+              {overview2}
             </p>
             <div className="pt-2 flex flex-wrap gap-4">
               <div className="flex items-center gap-2 text-xs text-[#E2C98A]">
@@ -66,7 +95,7 @@ export const AboutPage: React.FC = () => {
 
           <div className="relative rounded-sm overflow-hidden border border-[#242424]">
             <img
-              src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80"
+              src={aboutImage}
               alt="Corporate Headquarters & Energy Architecture"
               className="w-full h-[400px] object-cover filter brightness-85"
             />
@@ -84,10 +113,10 @@ export const AboutPage: React.FC = () => {
                 <Eye className="w-6 h-6 text-[#C8A45D]" />
               </div>
               <h3 className="text-xl font-bold text-[#F4F1E9]">
-                {t('aboutVisionTitle')}
+                {visionTitle}
               </h3>
               <p className="text-xs sm:text-sm text-[#8A8A8A] leading-relaxed">
-                {t('aboutVisionDesc')}
+                {visionDesc}
               </p>
             </div>
 
@@ -96,44 +125,56 @@ export const AboutPage: React.FC = () => {
                 <Target className="w-6 h-6 text-[#C8A45D]" />
               </div>
               <h3 className="text-xl font-bold text-[#F4F1E9]">
-                {t('aboutMissionTitle')}
+                {missionTitle}
               </h3>
               <p className="text-xs sm:text-sm text-[#8A8A8A] leading-relaxed">
-                {t('aboutMissionDesc')}
+                {missionDesc}
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 4. Core Values Detail */}
+      {/* 4. Core Values */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-12">
           <span className="text-xs font-bold uppercase tracking-widest text-[#C8A45D] block mb-2">
-            OPERATING PRINCIPLES
+            CORE PILLARS
           </span>
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#F4F1E9]">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#F4F1E9]">
             {t('aboutValuesTitle')}
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-[#121212] border border-[#222] p-6 rounded-sm">
-            <Shield className="w-8 h-8 text-[#C8A45D] mb-4" />
-            <h4 className="text-base font-bold text-[#F4F1E9] mb-2">{t('val1Title')}</h4>
-            <p className="text-xs text-[#8A8A8A] leading-relaxed">{t('val1Desc')}</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-[#121212] border border-[#222] p-6 rounded-sm space-y-3">
+            <Award className="w-6 h-6 text-[#C8A45D]" />
+            <h4 className="text-base font-bold text-[#F4F1E9]">
+              {val1Title}
+            </h4>
+            <p className="text-xs text-[#8A8A8A] leading-relaxed">
+              {val1Desc}
+            </p>
           </div>
 
-          <div className="bg-[#121212] border border-[#222] p-6 rounded-sm">
-            <Award className="w-8 h-8 text-[#C8A45D] mb-4" />
-            <h4 className="text-base font-bold text-[#F4F1E9] mb-2">{t('val2Title')}</h4>
-            <p className="text-xs text-[#8A8A8A] leading-relaxed">{t('val2Desc')}</p>
+          <div className="bg-[#121212] border border-[#222] p-6 rounded-sm space-y-3">
+            <Shield className="w-6 h-6 text-[#C8A45D]" />
+            <h4 className="text-base font-bold text-[#F4F1E9]">
+              {val2Title}
+            </h4>
+            <p className="text-xs text-[#8A8A8A] leading-relaxed">
+              {val2Desc}
+            </p>
           </div>
 
-          <div className="bg-[#121212] border border-[#222] p-6 rounded-sm">
-            <Sparkles className="w-8 h-8 text-[#C8A45D] mb-4" />
-            <h4 className="text-base font-bold text-[#F4F1E9] mb-2">{t('val3Title')}</h4>
-            <p className="text-xs text-[#8A8A8A] leading-relaxed">{t('val3Desc')}</p>
+          <div className="bg-[#121212] border border-[#222] p-6 rounded-sm space-y-3">
+            <Sparkles className="w-6 h-6 text-[#C8A45D]" />
+            <h4 className="text-base font-bold text-[#F4F1E9]">
+              {val3Title}
+            </h4>
+            <p className="text-xs text-[#8A8A8A] leading-relaxed">
+              {val3Desc}
+            </p>
           </div>
         </div>
       </section>

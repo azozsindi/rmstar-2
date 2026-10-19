@@ -1,0 +1,38 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Default deny-all barrier
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isExplicitAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'AzozSindi23@gmail.com' ||
+        (request.auth.token.email != null && request.auth.token.email.matches('.*@rmstar\\.com$'))
+      );
+    }
+
+    // Public website assets (logos, stations, vehicle wash photos)
+    // Public can read, only verified admins can upload images under 15MB
+    match /public/{allPaths=**} {
+      allow read: true;
+      allow write: if isExplicitAdmin() &&
+        request.resource.size < 15 * 1024 * 1024 &&
+        request.resource.contentType.matches('image/.*');
+    }
+
+    // Media & documentation uploads
+    // Public can read published media, only verified admins can upload
+    match /media/{allPaths=**} {
+      allow read: true;
+      allow write: if isExplicitAdmin() &&
+        request.resource.size < 25 * 1024 * 1024;
+    }
+  }
+}

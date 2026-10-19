@@ -20,7 +20,12 @@ export const ContactPage: React.FC<ContactPageProps> = ({ settings }) => {
   const { locale, t } = useLanguage();
   const isRtl = locale === 'ar';
 
-  const cleanWhatsApp = settings.officialWhatsApp.replace(/[^0-9]/g, '');
+  const rawDigits = settings.officialWhatsApp.replace(/[^0-9]/g, '');
+  const cleanWhatsApp = rawDigits.startsWith('05')
+    ? '966' + rawDigits.substring(1)
+    : rawDigits.startsWith('5') && rawDigits.length === 9
+    ? '966' + rawDigits
+    : rawDigits;
 
   return (
     <div className="space-y-20 pb-20">
@@ -33,11 +38,11 @@ export const ContactPage: React.FC<ContactPageProps> = ({ settings }) => {
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-black text-[#F4F1E9] tracking-tight">
-            {t('contactTitle')}
+            {(isRtl ? settings.contactPageTitleAr : settings.contactPageTitleEn) || t('contactTitle')}
           </h1>
 
           <p className="text-sm sm:text-base text-[#A6A6A6] max-w-2xl mx-auto leading-relaxed">
-            {t('contactSubtitle')}
+            {(isRtl ? settings.contactPageSubtitleAr : settings.contactPageSubtitleEn) || t('contactSubtitle')}
           </p>
         </div>
       </section>

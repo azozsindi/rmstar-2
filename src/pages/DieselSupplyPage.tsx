@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { QuotationForm } from '../components/forms/QuotationForm';
+import { SiteSettings } from '../types';
 import {
   Fuel,
   Truck,
@@ -10,9 +11,14 @@ import {
   Clock,
   Layers,
   ArrowDown,
+  Gauge,
 } from 'lucide-react';
 
-export const DieselSupplyPage: React.FC = () => {
+interface DieselSupplyPageProps {
+  settings?: SiteSettings;
+}
+
+export const DieselSupplyPage: React.FC<DieselSupplyPageProps> = ({ settings }) => {
   const { locale, t } = useLanguage();
   const isRtl = locale === 'ar';
 
@@ -20,6 +26,23 @@ export const DieselSupplyPage: React.FC = () => {
     const el = document.getElementById('quotation-form-section');
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
+
+  const title = (isRtl ? settings?.dieselPageTitleAr : settings?.dieselPageTitleEn) || t('dieselPageTitle');
+  const subtitle = (isRtl ? settings?.dieselPageSubtitleAr : settings?.dieselPageSubtitleEn) || t('dieselPageSubtitle');
+  const specsTitle = (isRtl ? settings?.dieselSpecsTitleAr : settings?.dieselSpecsTitleEn) || t('dieselSpecsTitle');
+  const specsDesc = (isRtl ? settings?.dieselSpecsDescAr : settings?.dieselSpecsDescEn) || t('dieselSpecsDesc');
+
+  const spec1Title = (isRtl ? settings?.dieselSpec1TitleAr : settings?.dieselSpec1TitleEn) || (isRtl ? 'ديزل فائق انخفاض الكبريت (Euro 5 - 10 PPM)' : 'Ultra-Low Sulfur Diesel (Euro 5 - 10 PPM)');
+  const spec1Desc = (isRtl ? settings?.dieselSpec1DescAr : settings?.dieselSpec1DescEn) || (isRtl ? 'يحتوي على أقل من 10 أجزاء في المليون من الكبريت، مما يطيل عمر محركات الأساطيل ويقلل الانبعاثات الكربونية.' : 'Compliant with Euro 5 benchmarks (<10 ppm sulfur), enhancing engine longevity and reducing emissions.');
+
+  const spec2Title = (isRtl ? settings?.dieselSpec2TitleAr : settings?.dieselSpec2TitleEn) || (isRtl ? 'شهادات الفحص المخبري لكل دفعة توريد' : 'Certified Batch Laboratory Reports');
+  const spec2Desc = (isRtl ? settings?.dieselSpec2DescAr : settings?.dieselSpec2DescEn) || (isRtl ? 'نوفر شهادة فحص واختبار مخبري معتمدة مع كل شحنة توضح الكثافة ودرجة الوميض والرقم السيتاني لضمان الشفافية المطلقة.' : 'Each delivery is accompanied by official laboratory inspection data for flash point, density, and cetane number.');
+
+  const spec3Title = (isRtl ? settings?.dieselSpec3TitleAr : settings?.dieselSpec3TitleEn) || (isRtl ? 'تفريغ هيدروليكي فائق الدقة بعدادات معايرة' : 'High-Precision Calibrated Hydraulic Metering');
+  const spec3Desc = (isRtl ? settings?.dieselSpec3DescAr : settings?.dieselSpec3DescEn) || (isRtl ? 'مضخات تفريغ متطورة وعدادات إلكترونية تضمن مطابقة الكميات المفرغة في خزانات العميل بنسبة خطأ صفرية.' : 'Advanced high-volume pumps and digital meters ensuring precise custody transfer with zero discrepancy.');
+
+  const fleetTitle = (isRtl ? settings?.dieselFleetTitleAr : settings?.dieselFleetTitleEn) || t('dieselFleetTitle');
+  const fleetDesc = (isRtl ? settings?.dieselFleetDescAr : settings?.dieselFleetDescEn) || t('dieselFleetDesc');
 
   return (
     <div className="space-y-20 pb-20">
@@ -32,17 +55,17 @@ export const DieselSupplyPage: React.FC = () => {
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-black text-[#F4F1E9] tracking-tight">
-            {t('dieselPageTitle')}
+            {title}
           </h1>
 
           <p className="text-sm sm:text-lg text-[#A6A6A6] max-w-3xl mx-auto leading-relaxed">
-            {t('dieselPageSubtitle')}
+            {subtitle}
           </p>
 
           <div className="pt-4">
             <button
               onClick={scrollToQuote}
-              className="px-6 py-3 rounded-sm bg-gradient-to-r from-[#C8A45D] to-[#E2C98A] text-[#080808] font-bold text-xs uppercase tracking-wider hover:shadow-[0_0_20px_rgba(200,164,93,0.4)] transition-all inline-flex items-center gap-2"
+              className="px-6 py-3 rounded-sm bg-gradient-to-r from-[#C8A45D] to-[#E2C98A] text-[#080808] font-bold text-xs uppercase tracking-wider hover:shadow-[0_0_20px_rgba(200,164,93,0.4)] transition-all inline-flex items-center gap-2 cursor-pointer"
             >
               <span>{t('navQuoteBtn')}</span>
               <ArrowDown className="w-3.5 h-3.5" />
@@ -59,10 +82,10 @@ export const DieselSupplyPage: React.FC = () => {
               {isRtl ? 'المواصفات الفنية والجودة' : 'Technical Specifications & Grades'}
             </span>
             <h2 className="text-2xl sm:text-3xl font-bold text-[#F4F1E9]">
-              {t('dieselSpecsTitle')}
+              {specsTitle}
             </h2>
             <p className="text-sm text-[#A6A6A6] leading-relaxed">
-              {t('dieselSpecsDesc')}
+              {specsDesc}
             </p>
 
             <div className="space-y-4 pt-2">
@@ -70,12 +93,10 @@ export const DieselSupplyPage: React.FC = () => {
                 <FileCheck2 className="w-5 h-5 text-[#C8A45D] flex-shrink-0 mt-0.5" />
                 <div>
                   <h4 className="text-sm font-bold text-[#F4F1E9]">
-                    {isRtl ? 'ديزل فائق انخفاض الكبريت (Euro 5 - 10 PPM)' : 'Ultra-Low Sulfur Diesel (Euro 5 - 10 PPM)'}
+                    {spec1Title}
                   </h4>
-                  <p className="text-xs text-[#8A8A8A] mt-1">
-                    {isRtl
-                      ? 'يحتوي على أقل من 10 أجزاء في المليون من الكبريت، مما يطيل عمر محركات الأساطيل ويقلل الانبعاثات الكربونية.'
-                      : 'Compliant with Euro 5 benchmarks (<10 ppm sulfur), enhancing engine longevity and reducing emissions.'}
+                  <p className="text-xs text-[#8A8A8A] mt-1 leading-relaxed">
+                    {spec1Desc}
                   </p>
                 </div>
               </div>
@@ -84,26 +105,22 @@ export const DieselSupplyPage: React.FC = () => {
                 <Layers className="w-5 h-5 text-[#C8A45D] flex-shrink-0 mt-0.5" />
                 <div>
                   <h4 className="text-sm font-bold text-[#F4F1E9]">
-                    {isRtl ? 'شهادات الفحص المخبري لكل دفعة توريد' : 'Certified Batch Laboratory Reports'}
+                    {spec2Title}
                   </h4>
-                  <p className="text-xs text-[#8A8A8A] mt-1">
-                    {isRtl
-                      ? 'نوفر شهادة فحص واختبار مخبري معتمدة مع كل شحنة توضح الكثافة ودرجة الوميض والرقم السيتاني لضمان الشفافية المطلقة.'
-                      : 'Each delivery is accompanied by official laboratory inspection data for flash point, density, and cetane number.'}
+                  <p className="text-xs text-[#8A8A8A] mt-1 leading-relaxed">
+                    {spec2Desc}
                   </p>
                 </div>
               </div>
 
               <div className="flex items-start gap-3 p-3.5 bg-[#121212] border border-[#222] rounded-sm">
-                <Clock className="w-5 h-5 text-[#C8A45D] flex-shrink-0 mt-0.5" />
+                <Gauge className="w-5 h-5 text-[#C8A45D] flex-shrink-0 mt-0.5" />
                 <div>
                   <h4 className="text-sm font-bold text-[#F4F1E9]">
-                    {isRtl ? 'إمدادات مرنة وجداول تسليم مبرمجة' : 'Flexible Scheduled Delivery Windows'}
+                    {spec3Title}
                   </h4>
-                  <p className="text-xs text-[#8A8A8A] mt-1">
-                    {isRtl
-                      ? 'إمكانية الجدولة الأسبوعية أو الشهرية مع دعم التوريد الطارئ على مدار 24 ساعة للمنشآت الحيوية والمصانع.'
-                      : 'Weekly or monthly supply schedules with 24/7 emergency dispatch capability for uninterrupted production.'}
+                  <p className="text-xs text-[#8A8A8A] mt-1 leading-relaxed">
+                    {spec3Desc}
                   </p>
                 </div>
               </div>
@@ -112,7 +129,7 @@ export const DieselSupplyPage: React.FC = () => {
 
           <div className="relative rounded-sm overflow-hidden border border-[#262626]">
             <img
-              src="https://images.unsplash.com/photo-1579298245158-33e8f568f7d3?auto=format&fit=crop&w=1200&q=80"
+              src={settings?.dieselSpecsImageUrl || 'https://images.unsplash.com/photo-1579298245158-33e8f568f7d3?auto=format&fit=crop&w=1200&q=80'}
               alt="Diesel Supply Infrastructure"
               className="w-full h-[450px] object-cover filter brightness-90"
             />
@@ -139,10 +156,10 @@ export const DieselSupplyPage: React.FC = () => {
               LOGISTICS INFRASTRUCTURE
             </span>
             <h2 className="text-2xl sm:text-3xl font-bold text-[#F4F1E9]">
-              {t('dieselFleetTitle')}
+              {fleetTitle}
             </h2>
             <p className="text-xs sm:text-sm text-[#8A8A8A] mt-2 leading-relaxed">
-              {t('dieselFleetDesc')}
+              {fleetDesc}
             </p>
           </div>
 
@@ -150,11 +167,11 @@ export const DieselSupplyPage: React.FC = () => {
             <div className="bg-[#141414] border border-[#222] p-6 rounded-sm">
               <Truck className="w-8 h-8 text-[#C8A45D] mb-4" />
               <h3 className="text-base font-bold text-[#F4F1E9] mb-2">
-                {isRtl ? 'أسطول صهاريج متطور' : 'Modern Tanker Units'}
+                {isRtl ? 'أسطول صهاريج ودينات متطور' : 'Modern Tanker Units'}
               </h3>
               <p className="text-xs text-[#8A8A8A] leading-relaxed">
                 {isRtl
-                  ? 'صهاريج بسعات متعددة تبدأ من 12,000 لتر إلى 36,000 لتر مزودة بمضخات تفريغ هيدروليكية ذات تدفق عالي لتسريع عملية التفريغ.'
+                  ? 'صهاريج ودينات بسعات متعددة تبدأ من 12,000 لتر إلى 36,000 لتر مزودة بمضخات تفريغ هيدروليكية ذات تدفق عالي لتسريع عملية التفريغ.'
                   : 'Multi-capacity tanker fleets ranging from 12k to 36k liters equipped with high-output discharge pumps.'}
               </p>
             </div>

@@ -19,12 +19,14 @@ interface CarWashPageProps {
   branches: CarWashBranch[];
   services: CarWashService[];
   setActiveTab: (tab: string) => void;
+  settings?: import('../types').SiteSettings;
 }
 
 export const CarWashPage: React.FC<CarWashPageProps> = ({
   branches,
   services,
   setActiveTab,
+  settings,
 }) => {
   const { locale, t } = useLanguage();
   const isRtl = locale === 'ar';
@@ -43,11 +45,11 @@ export const CarWashPage: React.FC<CarWashPageProps> = ({
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-black text-[#F4F1E9] tracking-tight">
-            {t('carWashTitle')}
+            {(isRtl ? settings?.carWashPageTitleAr : settings?.carWashPageTitleEn) || t('carWashTitle')}
           </h1>
 
           <p className="text-sm sm:text-base text-[#A6A6A6] max-w-2xl mx-auto leading-relaxed">
-            {t('carWashSubtitle')}
+            {(isRtl ? settings?.carWashPageSubtitleAr : settings?.carWashPageSubtitleEn) || t('carWashSubtitle')}
           </p>
         </div>
       </section>

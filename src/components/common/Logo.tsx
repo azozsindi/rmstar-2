@@ -81,15 +81,16 @@ export const Logo: React.FC<LogoProps> = ({ className = '', size = 'md', showSub
         </svg>
       </div>
 
-      {/* Corporate Typographic Branding */}
-      <div className="flex flex-col justify-center">
-        <div className="flex items-center gap-1.5 font-bold font-serif-luxury leading-none">
+      {/* Corporate Typographic Branding - dir="ltr" ensures RM STAR is never inverted to STAR RM in RTL */}
+      <div className="flex flex-col justify-center items-start text-left" dir="ltr">
+        <div className="flex items-center gap-1.5 font-bold font-serif-luxury leading-none" dir="ltr">
           <span className={`text-[#F4F1E9] font-extrabold ${textSizes[size]}`}>RM</span>
           <span className={`gold-gradient-text font-black ${textSizes[size]}`}>STAR</span>
         </div>
         {showSubtitle && (
           <span
             className={`text-[#A6A6A6] uppercase font-medium mt-0.5 leading-tight ${subtitleSizes[size]}`}
+            dir="ltr"
           >
             Energy &bull; Stations &bull; Care
           </span>
