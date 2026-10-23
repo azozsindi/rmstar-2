@@ -418,9 +418,11 @@ export const HomePage: React.FC<HomePageProps> = ({
             <div className="w-12 h-12 rounded-sm bg-[#1A1A1A] border border-[#C8A45D]/40 flex items-center justify-center text-[#E2C98A] mb-6">
               <ShieldCheck className="w-6 h-6 text-[#C8A45D]" />
             </div>
-            <h3 className="text-lg font-bold text-[#F4F1E9] mb-3">{t('val1Title')}</h3>
+            <h3 className="text-lg font-bold text-[#F4F1E9] mb-3">
+              {(isRtl ? settings.aboutVal1TitleAr : settings.aboutVal1TitleEn) || t('val1Title')}
+            </h3>
             <p className="text-xs sm:text-sm text-[#8A8A8A] leading-relaxed">
-              {t('val1Desc')}
+              {(isRtl ? settings.aboutVal1DescAr : settings.aboutVal1DescEn) || t('val1Desc')}
             </p>
           </div>
 
@@ -428,9 +430,11 @@ export const HomePage: React.FC<HomePageProps> = ({
             <div className="w-12 h-12 rounded-sm bg-[#1A1A1A] border border-[#C8A45D]/40 flex items-center justify-center text-[#E2C98A] mb-6">
               <Award className="w-6 h-6 text-[#C8A45D]" />
             </div>
-            <h3 className="text-lg font-bold text-[#F4F1E9] mb-3">{t('val2Title')}</h3>
+            <h3 className="text-lg font-bold text-[#F4F1E9] mb-3">
+              {(isRtl ? settings.aboutVal2TitleAr : settings.aboutVal2TitleEn) || t('val2Title')}
+            </h3>
             <p className="text-xs sm:text-sm text-[#8A8A8A] leading-relaxed">
-              {t('val2Desc')}
+              {(isRtl ? settings.aboutVal2DescAr : settings.aboutVal2DescEn) || t('val2Desc')}
             </p>
           </div>
 
@@ -438,9 +442,11 @@ export const HomePage: React.FC<HomePageProps> = ({
             <div className="w-12 h-12 rounded-sm bg-[#1A1A1A] border border-[#C8A45D]/40 flex items-center justify-center text-[#E2C98A] mb-6">
               <TrendingUp className="w-6 h-6 text-[#C8A45D]" />
             </div>
-            <h3 className="text-lg font-bold text-[#F4F1E9] mb-3">{t('val3Title')}</h3>
+            <h3 className="text-lg font-bold text-[#F4F1E9] mb-3">
+              {(isRtl ? settings.aboutVal3TitleAr : settings.aboutVal3TitleEn) || t('val3Title')}
+            </h3>
             <p className="text-xs sm:text-sm text-[#8A8A8A] leading-relaxed">
-              {t('val3Desc')}
+              {(isRtl ? settings.aboutVal3DescAr : settings.aboutVal3DescEn) || t('val3Desc')}
             </p>
           </div>
         </div>

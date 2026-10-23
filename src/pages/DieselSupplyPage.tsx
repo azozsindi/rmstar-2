@@ -217,7 +217,7 @@ export const DieselSupplyPage: React.FC<DieselSupplyPageProps> = ({ settings }) 
           </p>
         </div>
 
-        <QuotationForm />
+        <QuotationForm settings={settings} />
       </section>
     </div>
   );

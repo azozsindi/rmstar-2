@@ -30,7 +30,7 @@ export const Footer: React.FC<FooterProps> = ({ settings, setActiveTab, onOpenAd
           {/* Brand & Corporate Summary */}
           <div className="lg:col-span-2 space-y-4">
             <div className="cursor-pointer" onClick={() => handleNav('home')}>
-              <Logo size="md" />
+              <Logo size="md" settings={settings} />
             </div>
             <p className="text-sm leading-relaxed text-[#A6A6A6] max-w-sm">
               {t('footerDesc')}

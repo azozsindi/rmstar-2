@@ -127,6 +127,9 @@ export interface SiteSettings {
   // Brand & Identity
   companyNameAr: string;
   companyNameEn: string;
+  logoImageUrl?: string;
+  logoText?: string;
+  logoSubtitle?: string;
   brandTaglineAr?: string;
   brandTaglineEn?: string;
   brandSubtitleAr?: string;

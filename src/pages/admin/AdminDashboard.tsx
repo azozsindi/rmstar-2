@@ -33,6 +33,7 @@ import {
   seedInitialFirestoreData,
   DEFAULT_SITE_SETTINGS,
 } from '../../services/db';
+import { ImageUploadField } from '../../components/common/ImageUploadField';
 import {
   LayoutDashboard,
   Fuel,
@@ -73,6 +74,7 @@ import {
   Globe,
   Sliders,
 } from 'lucide-react';
+import { Logo } from '../../components/common/Logo';
 
 interface AdminDashboardProps {
   settings: SiteSettings;
@@ -98,6 +100,7 @@ interface AdminDashboardProps {
 
 type AdminTab =
   | 'overview'
+  | 'images'
   | 'company'
   | 'hero'
   | 'diesel'
@@ -430,21 +433,52 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     }
   };
 
-  const navMenuItems: { id: AdminTab; label: string; icon: React.FC<{ className?: string }>; badge?: number }[] = [
-    { id: 'overview', label: isRtl ? 'نظرة عامة' : 'Overview', icon: LayoutDashboard },
-    { id: 'company', label: isRtl ? 'بيانات الشركة والهوية' : 'Company & Brand', icon: Building },
-    { id: 'hero', label: isRtl ? 'الصفحة الرئيسية والهيرو' : 'Homepage & Hero', icon: Sparkles },
-    { id: 'diesel', label: isRtl ? 'توريد ونقل الديزل' : 'Diesel Supply', icon: Fuel },
-    { id: 'about', label: isRtl ? 'من نحن والرؤية' : 'About Us & Vision', icon: Info },
-    { id: 'stations', label: isRtl ? 'محطات الوقود' : 'Fuel Stations', icon: Layers, badge: stations.length },
-    { id: 'carwash', label: isRtl ? 'العناية بالمركبات والمغاسل' : 'Auto Detailing & Wash', icon: Car },
-    { id: 'partners', label: isRtl ? 'شركاء الأعمال' : 'Partners', icon: Handshake, badge: partners.length },
-    { id: 'news', label: isRtl ? 'الأخبار والبيانات' : 'News & Press', icon: Newspaper, badge: news.length },
-    { id: 'careers', label: isRtl ? 'الشواغر والوظائف' : 'Careers', icon: Briefcase, badge: careers.length },
-    { id: 'legal', label: isRtl ? 'الشروط والسياسات' : 'Legal & Policies', icon: FileText },
-    { id: 'quotes', label: isRtl ? 'طلبات عروض الأسعار' : 'Quotation Requests', icon: FileSpreadsheet, badge: pendingQuotes },
-    { id: 'messages', label: isRtl ? 'رسائل اتصل بنا' : 'Contact Messages', icon: Mail, badge: newMessages },
-    { id: 'system', label: isRtl ? 'إدارة الدخول والنظام' : 'System & Security', icon: Settings },
+  interface NavGroup {
+    title: string;
+    items: { id: AdminTab; label: string; icon: React.FC<{ className?: string }>; badge?: number }[];
+  }
+
+  const navGroups: NavGroup[] = [
+    {
+      title: isRtl ? 'المؤشرات والوسائط' : 'Overview & Media',
+      items: [
+        { id: 'overview', label: isRtl ? 'نظرة عامة والتوجيه السريع' : 'Overview & Jump Map', icon: LayoutDashboard },
+        { id: 'images', label: isRtl ? 'معرض وتحكم جميع الصور' : 'All Site Images & Sliders', icon: ImageIcon },
+      ],
+    },
+    {
+      title: isRtl ? 'قطاعات الأعمال والشرائح' : 'Business & Services',
+      items: [
+        { id: 'hero', label: isRtl ? 'الرئيسية وشرائح القطاعات' : 'Homepage & Sectors', icon: Sparkles },
+        { id: 'carwash', label: isRtl ? 'باقات وشرائح المغاسل' : 'Car Wash Packages', icon: Car, badge: services.length },
+        { id: 'stations', label: isRtl ? 'محطات الوقود' : 'Fuel Stations', icon: Layers, badge: stations.length },
+        { id: 'diesel', label: isRtl ? 'توريد ونقل الديزل' : 'Diesel Supply', icon: Fuel },
+      ],
+    },
+    {
+      title: isRtl ? 'المحتوى المؤسسي' : 'Corporate Identity',
+      items: [
+        { id: 'company', label: isRtl ? 'بيانات الشركة والهوية' : 'Company & Brand', icon: Building },
+        { id: 'about', label: isRtl ? 'من نحن والرؤية' : 'About Us & Vision', icon: Info },
+        { id: 'partners', label: isRtl ? 'شركاء الأعمال' : 'Partners', icon: Handshake, badge: partners.length },
+        { id: 'news', label: isRtl ? 'الأخبار والبيانات' : 'News & Press', icon: Newspaper, badge: news.length },
+        { id: 'careers', label: isRtl ? 'الشواغر والوظائف' : 'Careers', icon: Briefcase, badge: careers.length },
+        { id: 'legal', label: isRtl ? 'الشروط والسياسات' : 'Legal & Policies', icon: FileText },
+      ],
+    },
+    {
+      title: isRtl ? 'المعاملات والتواصل' : 'Inquiries & Leads',
+      items: [
+        { id: 'quotes', label: isRtl ? 'طلبات عروض الأسعار' : 'Quotation Requests', icon: FileSpreadsheet, badge: pendingQuotes },
+        { id: 'messages', label: isRtl ? 'رسائل اتصل بنا' : 'Contact Messages', icon: Mail, badge: newMessages },
+      ],
+    },
+    {
+      title: isRtl ? 'الأمان والإدارة' : 'System & Security',
+      items: [
+        { id: 'system', label: isRtl ? 'إدارة الدخول والنظام' : 'System & Security', icon: Settings },
+      ],
+    },
   ];
 
   return (
@@ -452,6 +486,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       {/* Top Admin Header Bar */}
       <header className="sticky top-0 z-40 bg-[#0C0C0C]/95 backdrop-blur-md border-b border-[#1F1F1F] px-4 sm:px-8 py-3.5 flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
+          <Logo size="sm" settings={draftSettings} showSubtitle={false} className="hidden sm:flex border-e border-[#222] pe-4 me-1" />
           <div className="w-8 h-8 rounded-sm bg-[#181818] border border-[#C8A45D]/50 flex items-center justify-center text-[#E2C98A]">
             <Sliders className="w-4 h-4 text-[#C8A45D]" />
           </div>
@@ -521,36 +556,45 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       {/* Main Admin Workspace Grid */}
       <div className="flex-1 flex flex-col md:flex-row">
         {/* Left Navigation Sidebar */}
-        <aside className="w-full md:w-64 bg-[#0A0A0A] border-b md:border-b-0 md:border-e border-[#1C1C1C] p-3 sm:p-4 shrink-0 flex flex-row md:flex-col overflow-x-auto md:overflow-y-auto space-x-1 md:space-x-0 md:space-y-1">
-          {navMenuItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = activeTab === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => setActiveTab(item.id)}
-                className={`w-full flex items-center justify-between px-3 py-2.5 rounded-sm text-xs font-medium transition-all cursor-pointer shrink-0 ${
-                  isActive
-                    ? 'bg-[#181818] text-[#E2C98A] border-s-2 border-[#C8A45D] shadow-sm font-bold'
-                    : 'text-[#888] hover:text-[#F4F1E9] hover:bg-[#121212]'
-                }`}
-              >
-                <div className="flex items-center gap-2.5">
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-[#C8A45D]' : 'text-[#666]'}`} />
-                  <span className="whitespace-nowrap">{item.label}</span>
-                </div>
-                {item.badge !== undefined && item.badge > 0 && (
-                  <span
-                    className={`text-[10px] px-1.5 py-0.5 rounded-full font-mono ${
-                      isActive ? 'bg-[#C8A45D] text-[#080808] font-bold' : 'bg-[#1E1E1E] text-[#999]'
-                    }`}
-                  >
-                    {item.badge}
-                  </span>
-                )}
-              </button>
-            );
-          })}
+        <aside className="w-full md:w-64 bg-[#0A0A0A] border-b md:border-b-0 md:border-e border-[#1C1C1C] p-3 sm:p-4 shrink-0 flex flex-row md:flex-col overflow-x-auto md:overflow-y-auto space-x-1 md:space-x-0 md:space-y-4">
+          {navGroups.map((group, gIdx) => (
+            <div key={gIdx} className="space-y-1 shrink-0 md:w-full">
+              <div className="hidden md:block px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[#C8A45D]/80 border-b border-[#181818] mb-1">
+                {group.title}
+              </div>
+              <div className="flex flex-row md:flex-col gap-1">
+                {group.items.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = activeTab === item.id;
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => setActiveTab(item.id)}
+                      className={`w-full flex items-center justify-between px-3 py-2 rounded-sm text-xs font-medium transition-all cursor-pointer shrink-0 ${
+                        isActive
+                          ? 'bg-[#181818] text-[#E2C98A] border-s-2 border-[#C8A45D] shadow-sm font-bold'
+                          : 'text-[#888] hover:text-[#F4F1E9] hover:bg-[#121212]'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <Icon className={`w-4 h-4 ${isActive ? 'text-[#C8A45D]' : 'text-[#666]'}`} />
+                        <span className="whitespace-nowrap">{item.label}</span>
+                      </div>
+                      {item.badge !== undefined && item.badge > 0 && (
+                        <span
+                          className={`text-[10px] px-1.5 py-0.5 rounded-full font-mono ${
+                            isActive ? 'bg-[#C8A45D] text-[#080808] font-bold' : 'bg-[#1E1E1E] text-[#999]'
+                          }`}
+                        >
+                          {item.badge}
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
         </aside>
 
         {/* Central Content Panel */}
@@ -635,41 +679,604 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 </div>
               </div>
 
-              {/* Quick Actions Matrix */}
+              {/* Quick Actions Matrix - Full Site Navigator */}
               <div className="bg-[#101010] border border-[#1F1F1F] rounded-sm p-6 space-y-4">
-                <h3 className="text-sm font-bold text-[#F4F1E9] flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-[#C8A45D]" />
-                  <span>{isRtl ? 'روابط التعديل السريع المباشر' : 'Quick Editing Shortcuts'}</span>
-                </h3>
+                <div className="flex items-center justify-between border-b border-[#222] pb-3">
+                  <div>
+                    <h3 className="text-sm font-bold text-[#F4F1E9] flex items-center gap-2">
+                      <Sparkles className="w-4 h-4 text-[#C8A45D]" />
+                      <span>{isRtl ? 'خريطة التوجيه السريع — أين تتوجه لتعديل أي عنصر' : 'Quick Site Navigation Map'}</span>
+                    </h3>
+                    <p className="text-[11px] text-[#777] mt-0.5">
+                      {isRtl ? 'اضغط مباشرة على أي قسم للوصول الفوري وتعديل بياناته وصوره' : 'Click on any card to jump directly to its editing panel'}
+                    </p>
+                  </div>
+                </div>
+
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 text-xs">
                   <button
-                    onClick={() => setActiveTab('company')}
-                    className="p-3 bg-[#151515] hover:bg-[#1E1E1E] border border-[#282828] hover:border-[#C8A45D] rounded-sm text-start transition-all cursor-pointer"
+                    onClick={() => setActiveTab('images')}
+                    className="p-3.5 bg-[#161616] hover:bg-[#1E1E1E] border border-[#C8A45D]/40 hover:border-[#C8A45D] rounded-sm text-start transition-all cursor-pointer group shadow-sm"
                   >
-                    <div className="font-bold text-[#F4F1E9]">{isRtl ? 'بيانات الاتصال' : 'Contact Info'}</div>
-                    <div className="text-[10px] text-[#777] mt-1">{draftSettings.officialPhone}</div>
+                    <div className="flex items-center gap-2 text-[#E2C98A] font-bold">
+                      <ImageIcon className="w-4 h-4 text-[#C8A45D]" />
+                      <span>{isRtl ? 'معرض وتحكم جميع الصور' : 'All Site Images'}</span>
+                    </div>
+                    <div className="text-[11px] text-[#888] mt-1.5">{isRtl ? 'تعديل كافة صور الموقع في شاشة واحدة' : 'Control all website images in one place'}</div>
                   </button>
+
+                  <button
+                    onClick={() => setActiveTab('carwash')}
+                    className="p-3.5 bg-[#161616] hover:bg-[#1E1E1E] border border-[#282828] hover:border-[#C8A45D] rounded-sm text-start transition-all cursor-pointer group"
+                  >
+                    <div className="flex items-center gap-2 text-[#F4F1E9] font-bold group-hover:text-[#E2C98A]">
+                      <Car className="w-4 h-4 text-[#C8A45D]" />
+                      <span>{isRtl ? 'باقات وشرائح المغاسل' : 'Car Wash Packages'}</span>
+                    </div>
+                    <div className="text-[11px] text-[#888] mt-1.5">{isRtl ? 'تعديل شرائح باقات العناية والصور' : 'Edit service packages, features & slides'}</div>
+                  </button>
+
                   <button
                     onClick={() => setActiveTab('hero')}
-                    className="p-3 bg-[#151515] hover:bg-[#1E1E1E] border border-[#282828] hover:border-[#C8A45D] rounded-sm text-start transition-all cursor-pointer"
+                    className="p-3.5 bg-[#161616] hover:bg-[#1E1E1E] border border-[#282828] hover:border-[#C8A45D] rounded-sm text-start transition-all cursor-pointer group"
                   >
-                    <div className="font-bold text-[#F4F1E9]">{isRtl ? 'عنوان الهيرو' : 'Hero Title'}</div>
-                    <div className="text-[10px] text-[#777] mt-1">{isRtl ? 'تعديل العنوان والصورة' : 'Edit hero and image'}</div>
+                    <div className="flex items-center gap-2 text-[#F4F1E9] font-bold group-hover:text-[#E2C98A]">
+                      <Sparkles className="w-4 h-4 text-[#C8A45D]" />
+                      <span>{isRtl ? 'الرئيسية والقطاعات الثلاثة' : 'Hero & 3 Sectors'}</span>
+                    </div>
+                    <div className="text-[11px] text-[#888] mt-1.5">{isRtl ? 'عنوان الهيرو، العدادات، وشرائح القطاعات' : 'Hero title, stats & sector cards'}</div>
                   </button>
+
                   <button
                     onClick={() => setActiveTab('diesel')}
-                    className="p-3 bg-[#151515] hover:bg-[#1E1E1E] border border-[#282828] hover:border-[#C8A45D] rounded-sm text-start transition-all cursor-pointer"
+                    className="p-3.5 bg-[#161616] hover:bg-[#1E1E1E] border border-[#282828] hover:border-[#C8A45D] rounded-sm text-start transition-all cursor-pointer group"
                   >
-                    <div className="font-bold text-[#F4F1E9]">{isRtl ? 'مواصفات الديزل' : 'Diesel Specs'}</div>
-                    <div className="text-[10px] text-[#777] mt-1">{isRtl ? 'تعديل بنود الجودة' : 'Edit quality specs'}</div>
+                    <div className="flex items-center gap-2 text-[#F4F1E9] font-bold group-hover:text-[#E2C98A]">
+                      <Fuel className="w-4 h-4 text-[#C8A45D]" />
+                      <span>{isRtl ? 'توريد ونقل الديزل' : 'Diesel Supply'}</span>
+                    </div>
+                    <div className="text-[11px] text-[#888] mt-1.5">{isRtl ? 'المواصفات الفنية، الأسطول، والصور' : 'Quality specs, fleet and imagery'}</div>
                   </button>
+
+                  <button
+                    onClick={() => setActiveTab('stations')}
+                    className="p-3.5 bg-[#161616] hover:bg-[#1E1E1E] border border-[#282828] hover:border-[#C8A45D] rounded-sm text-start transition-all cursor-pointer group"
+                  >
+                    <div className="flex items-center gap-2 text-[#F4F1E9] font-bold group-hover:text-[#E2C98A]">
+                      <Layers className="w-4 h-4 text-[#C8A45D]" />
+                      <span>{isRtl ? 'شبكة محطات الوقود' : 'Fuel Stations'}</span>
+                    </div>
+                    <div className="text-[11px] text-[#888] mt-1.5">{isRtl ? 'إضافة وتعديل المحطات والخرائط' : 'Manage stations, services & locations'}</div>
+                  </button>
+
+                  <button
+                    onClick={() => setActiveTab('company')}
+                    className="p-3.5 bg-[#161616] hover:bg-[#1E1E1E] border border-[#282828] hover:border-[#C8A45D] rounded-sm text-start transition-all cursor-pointer group"
+                  >
+                    <div className="flex items-center gap-2 text-[#F4F1E9] font-bold group-hover:text-[#E2C98A]">
+                      <Building className="w-4 h-4 text-[#C8A45D]" />
+                      <span>{isRtl ? 'بيانات الشركة والاتصال' : 'Company & Contact'}</span>
+                    </div>
+                    <div className="text-[11px] text-[#888] mt-1.5">{isRtl ? 'أرقام الهاتف، الواتساب، وشريط الإعلان' : 'Phones, WhatsApp & announcement ticker'}</div>
+                  </button>
+
                   <button
                     onClick={() => setActiveTab('about')}
-                    className="p-3 bg-[#151515] hover:bg-[#1E1E1E] border border-[#282828] hover:border-[#C8A45D] rounded-sm text-start transition-all cursor-pointer"
+                    className="p-3.5 bg-[#161616] hover:bg-[#1E1E1E] border border-[#282828] hover:border-[#C8A45D] rounded-sm text-start transition-all cursor-pointer group"
                   >
-                    <div className="font-bold text-[#F4F1E9]">{isRtl ? 'الرؤية والرسالة' : 'Vision & Mission'}</div>
-                    <div className="text-[10px] text-[#777] mt-1">{isRtl ? 'تعديل نبذة من نحن' : 'Edit narrative & values'}</div>
+                    <div className="flex items-center gap-2 text-[#F4F1E9] font-bold group-hover:text-[#E2C98A]">
+                      <Info className="w-4 h-4 text-[#C8A45D]" />
+                      <span>{isRtl ? 'من نحن والرؤية' : 'About Us & Vision'}</span>
+                    </div>
+                    <div className="text-[11px] text-[#888] mt-1.5">{isRtl ? 'الرسالة، القيم المؤسسية، وصورة الصرح' : 'Mission, corporate values & photo'}</div>
                   </button>
+
+                  <button
+                    onClick={() => setActiveTab('system')}
+                    className="p-3.5 bg-[#161616] hover:bg-[#1E1E1E] border border-[#282828] hover:border-[#C8A45D] rounded-sm text-start transition-all cursor-pointer group"
+                  >
+                    <div className="flex items-center gap-2 text-[#F4F1E9] font-bold group-hover:text-[#E2C98A]">
+                      <Settings className="w-4 h-4 text-[#C8A45D]" />
+                      <span>{isRtl ? 'أمان النظام وبيانات الدخول' : 'Security & Login'}</span>
+                    </div>
+                    <div className="text-[11px] text-[#888] mt-1.5">{isRtl ? 'تعديل اسم المستخدم وكلمة المرور' : 'Update admin username & password'}</div>
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: ALL SITE IMAGES & SLIDERS MASTER CONTROL */}
+          {activeTab === 'images' && (
+            <div className="space-y-8">
+              <div className="border-b border-[#1C1C1C] pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h2 className="text-xl sm:text-2xl font-black text-[#F4F1E9] flex items-center gap-2">
+                    <ImageIcon className="w-6 h-6 text-[#C8A45D]" />
+                    <span>{isRtl ? 'معرض وتحكم جميع صور وشرائح الموقع' : 'All Site Images & Sliders Master Control'}</span>
+                  </h2>
+                  <p className="text-xs text-[#888] mt-1">
+                    {isRtl
+                      ? 'تحكم شامل وتعديل فوري لجميع صور الموقع، خلفيات الهيرو، شرائح القطاعات، باقات المغاسل، ومحطات الوقود مع معاينة مباشرة.'
+                      : 'Comprehensive visual center to review and update all website images, hero backdrops, sector slides, and packages.'}
+                  </p>
+                </div>
+                <button
+                  onClick={handleSaveAllSettings}
+                  disabled={savingSettings}
+                  className="px-5 py-2.5 bg-gradient-to-r from-[#C8A45D] to-[#E2C98A] text-[#080808] font-bold text-xs rounded-sm hover:shadow-[0_0_20px_rgba(200,164,93,0.4)] transition-all flex items-center gap-2 cursor-pointer w-fit"
+                >
+                  <Save className="w-4 h-4" />
+                  <span>{savingSettings ? (isRtl ? 'جاري الحفظ...' : 'Saving...') : (isRtl ? 'حفظ كافة الصور' : 'Save All Images')}</span>
+                </button>
+              </div>
+
+              {/* 0. Website Logo & Brand Emblem */}
+              <div className="bg-[#101010] border border-[#C8A45D]/40 rounded-sm p-6 space-y-4 shadow-[0_4px_20px_rgba(200,164,93,0.08)]">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[#1F1F1F] pb-3 gap-2">
+                  <div>
+                    <h3 className="text-sm font-bold text-[#E2C98A] flex items-center gap-2">
+                      <Sparkles className="w-4 h-4 text-[#C8A45D]" />
+                      <span>{isRtl ? 'شعار وهوية الموقع (Website Logo & Identity)' : 'Website Logo & Brand Graphics'}</span>
+                    </h3>
+                    <p className="text-[11px] text-[#777]">
+                      {isRtl ? 'رفع وتغيير شعار الشركة مباشرة من ألبوم/استوديو الصور بهاتفك أو حاسوبك — يتم تطبيقه فوراً في الهيدر والفوتر ولوحة التحكم' : 'Upload company logo image directly from device photo library or studio'}
+                    </p>
+                  </div>
+                  <span className="text-[10px] px-2 py-0.5 bg-[#181818] text-[#C8A45D] font-mono rounded border border-[#C8A45D]/30 w-fit">
+                    {isRtl ? 'مباشر من الاستوديو (PNG / SVG / JPG)' : 'Direct from Studio'}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                  <div className="lg:col-span-7 space-y-4">
+                    <ImageUploadField
+                      label={isRtl ? 'صورة الشعار (رفع مباشر من الاستوديو أو إدخال رابط)' : 'Logo Image (Upload from studio)'}
+                      value={draftSettings.logoImageUrl || ''}
+                      onChange={(val) => {
+                        setDraftSettings((prev) => ({ ...prev, logoImageUrl: val }));
+                        showFeedback(isRtl ? 'تم تحديث الشعار من الاستوديو! اضغط حفظ في الأعلى للاعتماد' : 'Logo updated! Click Save Changes above.');
+                      }}
+                      aspectRatio="landscape"
+                      placeholderText={isRtl ? 'اضغط لاختيار الشعار من الاستوديو / ألبوم الصور' : 'Select logo image from studio library'}
+                    />
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                      <div className="space-y-1">
+                        <label className="text-[11px] font-semibold text-[#888]">
+                          {isRtl ? 'اسم البراند النصي بجانب الشعار' : 'Brand Text Label'}
+                        </label>
+                        <input
+                          type="text"
+                          value={draftSettings.logoText || ''}
+                          onChange={(e) => setDraftSettings({ ...draftSettings, logoText: e.target.value })}
+                          placeholder="RM STAR"
+                          className="w-full bg-[#161616] border border-[#2E2E2E] focus:border-[#C8A45D] rounded-sm px-3 py-1.5 text-xs text-[#F4F1E9] focus:outline-none"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-[11px] font-semibold text-[#888]">
+                          {isRtl ? 'الوصف الفرعي للشعار' : 'Logo Subtitle'}
+                        </label>
+                        <input
+                          type="text"
+                          value={draftSettings.logoSubtitle || ''}
+                          onChange={(e) => setDraftSettings({ ...draftSettings, logoSubtitle: e.target.value })}
+                          placeholder="Energy • Stations • Care"
+                          className="w-full bg-[#161616] border border-[#2E2E2E] focus:border-[#C8A45D] rounded-sm px-3 py-1.5 text-xs text-[#F4F1E9] focus:outline-none"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Live Interactive Preview Box */}
+                  <div className="lg:col-span-5 bg-[#0A0A0A] border border-[#252525] rounded-sm p-4 space-y-3">
+                    <div className="flex items-center justify-between border-b border-[#1A1A1A] pb-2">
+                      <span className="text-[11px] font-bold text-[#AAA] flex items-center gap-1.5">
+                        <Eye className="w-3.5 h-3.5 text-[#C8A45D]" />
+                        <span>{isRtl ? 'معاينة حية للشعار الحالي' : 'Live Logo Preview'}</span>
+                      </span>
+                      {draftSettings.logoImageUrl && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setDraftSettings((prev) => ({ ...prev, logoImageUrl: '' }));
+                            showFeedback(isRtl ? 'تمت العودة لنجمة آر إم ستار الهندسية الافتراضية' : 'Restored default geometric star logo');
+                          }}
+                          className="text-[10px] text-amber-400 hover:underline cursor-pointer"
+                        >
+                          {isRtl ? 'استعادة الشعار الافتراضي' : 'Reset to default'}
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="bg-[#121212] border border-[#1E1E1E] rounded p-4 flex flex-col items-center justify-center min-h-[110px] space-y-2">
+                      <Logo size="lg" settings={draftSettings} />
+                    </div>
+
+                    <div className="text-[10px] text-[#777] leading-relaxed">
+                      {isRtl
+                        ? 'إذا رفعت صورة شعار جديدة ستظهر مباشرة في أعلى وأسفل كافة صفحات الموقع ولوحة التحكم. إذا فرّغت الصورة، سيعود تلقائياً الشعار الذهبي الهندسي الأيقوني.'
+                        : 'Uploaded image renders across header, footer, and admin header. Clearing the image restores default geometric emblem.'}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* 1. Hero Backdrop Image */}
+              <div className="bg-[#101010] border border-[#222] rounded-sm p-6 space-y-4">
+                <div className="flex items-center justify-between border-b border-[#1F1F1F] pb-3">
+                  <div>
+                    <h3 className="text-sm font-bold text-[#E2C98A] flex items-center gap-2">
+                      <Sparkles className="w-4 h-4 text-[#C8A45D]" />
+                      <span>{isRtl ? '1. صورة خلفية واجهة الهيرو الرئيسية (Hero Background)' : '1. Hero Main Background Image'}</span>
+                    </h3>
+                    <p className="text-[11px] text-[#777]">
+                      {isRtl ? 'الصورة الكبرى في أعلى الصفحة الرئيسية — يمكنك اختيار صورة مباشرة من الاستوديو أو ألبوم الصور بهاتفك' : 'Main hero visual depicting premium commercial fuel tanker fleet'}
+                    </p>
+                  </div>
+                  <span className="text-[10px] px-2 py-0.5 bg-[#181818] text-[#C8A45D] font-mono rounded border border-[#C8A45D]/30">
+                    2560 x 1440 px
+                  </span>
+                </div>
+
+                <ImageUploadField
+                  label={isRtl ? 'صورة الهيرو الرئيسية (رفع من الاستوديو / الجهاز)' : 'Main Hero Image (Upload from studio)'}
+                  value={draftSettings.heroImageUrl || 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=2560&q=95'}
+                  onChange={(val) => {
+                    setDraftSettings((prev) => ({ ...prev, heroImageUrl: val }));
+                    showFeedback(isRtl ? 'تم تحديث صورة الهيرو من الاستوديو! اضغط حفظ في الأعلى للتأكيد' : 'Hero image updated! Click save to persist.');
+                  }}
+                  aspectRatio="banner"
+                  placeholderText={isRtl ? 'اضغط لاختيار صورة الهيرو من استوديو الصور بالهاتف أو جهازك' : 'Select hero image from photo gallery'}
+                />
+
+                {/* Presets */}
+                <div className="pt-2 border-t border-[#1C1C1C]">
+                  <span className="text-[11px] text-[#888] block mb-1.5">{isRtl ? 'نماذج مقترحة سريعة بجودة 4K فائقة الوضوح (اضغط للتطبيق الفوري):' : 'Suggested Ultra-HD presets (click to apply):'}</span>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setDraftSettings({ ...draftSettings, heroImageUrl: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=2560&q=95' })}
+                      className="px-2.5 py-1 text-[10px] bg-[#1A1A1A] hover:bg-[#252525] border border-[#333] hover:border-[#C8A45D] text-[#CCC] hover:text-[#E2C98A] rounded-sm transition-all cursor-pointer"
+                    >
+                      {isRtl ? 'صهريج ديزل فائق (شاحنة أوروبية معتمدة)' : 'Heavy Diesel Tanker'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setDraftSettings({ ...draftSettings, heroImageUrl: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=2560&q=95' })}
+                      className="px-2.5 py-1 text-[10px] bg-[#1A1A1A] hover:bg-[#252525] border border-[#333] hover:border-[#C8A45D] text-[#CCC] hover:text-[#E2C98A] rounded-sm transition-all cursor-pointer"
+                    >
+                      {isRtl ? 'شاحنات نقل لوجستي سريعة' : 'Fleet Logistics'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setDraftSettings({ ...draftSettings, heroImageUrl: 'https://images.unsplash.com/photo-1579298245158-33e8f568f7d3?auto=format&fit=crop&w=2560&q=95' })}
+                      className="px-2.5 py-1 text-[10px] bg-[#1A1A1A] hover:bg-[#252525] border border-[#333] hover:border-[#C8A45D] text-[#CCC] hover:text-[#E2C98A] rounded-sm transition-all cursor-pointer"
+                    >
+                      {isRtl ? 'بنية تحتية لتوزيع الوقود' : 'Terminal Distribution'}
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* 2. Three Strategic Sectors Images (Homepage) */}
+              <div className="bg-[#101010] border border-[#222] rounded-sm p-6 space-y-6">
+                <div className="border-b border-[#1F1F1F] pb-3">
+                  <h3 className="text-sm font-bold text-[#E2C98A]">{isRtl ? '2. صور شرائح قطاعات الأعمال الثلاثة (الصفحة الرئيسية)' : '2. Core Business Sectors Images'}</h3>
+                  <p className="text-[11px] text-[#777]">{isRtl ? 'الشرائح المعروضة في قسم قطاعات آر إم ستار الاستراتيجية — رفع صور من الاستوديو' : 'Cards shown in RM STAR strategic portfolio section'}</p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {/* Sector 1: Diesel */}
+                  <ImageUploadField
+                    label={isRtl ? 'قطاع 1: نقل وتوريد الديزل' : 'Sector 1: Diesel Logistics'}
+                    value={draftSettings.sector1ImageUrl || 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80'}
+                    onChange={(val) => {
+                      setDraftSettings((prev) => ({ ...prev, sector1ImageUrl: val }));
+                      showFeedback(isRtl ? 'تم تحديث صورة قطاع الديزل!' : 'Diesel sector image updated!');
+                    }}
+                    aspectRatio="landscape"
+                    placeholderText={isRtl ? 'اختر صورة من الاستوديو لقطاع الديزل' : 'Select diesel image from photo library'}
+                  />
+
+                  {/* Sector 2: Stations */}
+                  <ImageUploadField
+                    label={isRtl ? 'قطاع 2: شبكة محطات الوقود' : 'Sector 2: Retail Stations'}
+                    value={draftSettings.sector2ImageUrl || 'https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=800&q=80'}
+                    onChange={(val) => {
+                      setDraftSettings((prev) => ({ ...prev, sector2ImageUrl: val }));
+                      showFeedback(isRtl ? 'تم تحديث صورة قطاع المحطات!' : 'Stations sector image updated!');
+                    }}
+                    aspectRatio="landscape"
+                    placeholderText={isRtl ? 'اختر صورة من الاستوديو لمحطات الوقود' : 'Select station image from photo library'}
+                  />
+
+                  {/* Sector 3: Car Wash */}
+                  <ImageUploadField
+                    label={isRtl ? 'قطاع 3: العناية بالمركبات والمغاسل' : 'Sector 3: Auto Detailing'}
+                    value={draftSettings.sector3ImageUrl || 'https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=800&q=80'}
+                    onChange={(val) => {
+                      setDraftSettings((prev) => ({ ...prev, sector3ImageUrl: val }));
+                      showFeedback(isRtl ? 'تم تحديث صورة قطاع المغاسل!' : 'Carwash sector image updated!');
+                    }}
+                    aspectRatio="landscape"
+                    placeholderText={isRtl ? 'اختر صورة من الاستوديو لمراكز المغاسل' : 'Select auto detailing image from photo library'}
+                  />
+                </div>
+              </div>
+
+              {/* 3. Car Wash Services / Packages Slides */}
+              <div className="bg-[#101010] border border-[#222] rounded-sm p-6 space-y-6">
+                <div className="flex items-center justify-between border-b border-[#1F1F1F] pb-3">
+                  <div>
+                    <h3 className="text-sm font-bold text-[#E2C98A] flex items-center gap-2">
+                      <Car className="w-4 h-4 text-[#C8A45D]" />
+                      <span>{isRtl ? '3. صور شرائح باقات العناية بالمركبات ومغاسل السيارات' : '3. Car Wash Packages Slides Images'}</span>
+                    </h3>
+                    <p className="text-[11px] text-[#777]">
+                      {isRtl ? 'الشرائح المعروضة في الصفحة الرئيسية وقسم المغاسل — يمكنك تغيير صورة كل باقة مباشرة برفع صورة من الاستوديو' : 'Visuals displayed on the homepage car wash packages slider'}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setActiveTab('carwash')}
+                    className="text-xs font-bold text-[#C8A45D] hover:underline cursor-pointer"
+                  >
+                    {isRtl ? 'إدارة تفاصيل الباقات كاملة &larr;' : 'Manage Full Packages &rarr;'}
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {services.map((srv) => (
+                    <div key={srv.id} className="bg-[#141414] border border-[#262626] rounded-sm p-4 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold text-[#F4F1E9] truncate max-w-[180px]">{isRtl ? srv.nameAr : srv.nameEn}</span>
+                        <span className="text-[10px] text-[#C8A45D] font-mono">{srv.duration}</span>
+                      </div>
+                      <ImageUploadField
+                        label={isRtl ? `صورة: ${srv.nameAr}` : `Photo: ${srv.nameEn}`}
+                        value={srv.imageUrl || 'https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=800&q=80'}
+                        onChange={async (newUrl) => {
+                          const updated = { ...srv, imageUrl: newUrl };
+                          setServices((prev) =>
+                            prev.map((item) => (item.id === srv.id ? updated : item))
+                          );
+                          await saveCarWashService(updated);
+                          showFeedback(isRtl ? `تم تحديث وحفظ صورة "${srv.nameAr}" من الاستوديو!` : 'Package image updated from gallery!');
+                        }}
+                        aspectRatio="landscape"
+                        placeholderText={isRtl ? 'اختر صورة الباقة من الاستوديو' : 'Select package photo from photo library'}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* 4. Diesel Supply & About Images */}
+              <div className="bg-[#101010] border border-[#222] rounded-sm p-6 space-y-6">
+                <div className="border-b border-[#1F1F1F] pb-3">
+                  <h3 className="text-sm font-bold text-[#E2C98A]">{isRtl ? '4. صور صفحات توريد الديزل ومن نحن' : '4. Diesel Supply & About Page Visuals'}</h3>
+                  <p className="text-[11px] text-[#777]">{isRtl ? 'صور البنية التحتية، أسطول النقل، والصرح المؤسسي — رفع مباشر من الاستوديو' : 'Infrastructure, logistics fleet and headquarters visuals'}</p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {/* Diesel Specs */}
+                  <ImageUploadField
+                    label={isRtl ? 'صورة المواصفات الفنية للديزل' : 'Diesel Specs Visual'}
+                    value={draftSettings.dieselSpecsImageUrl || 'https://images.unsplash.com/photo-1579298245158-33e8f568f7d3?auto=format&fit=crop&w=1200&q=80'}
+                    onChange={(val) => {
+                      setDraftSettings((prev) => ({ ...prev, dieselSpecsImageUrl: val }));
+                      showFeedback(isRtl ? 'تم تحديث صورة مواصفات الديزل!' : 'Diesel specs image updated!');
+                    }}
+                    aspectRatio="landscape"
+                    placeholderText={isRtl ? 'اختر صورة المواصفات من الاستوديو' : 'Select specs image from library'}
+                  />
+
+                  {/* Diesel Fleet */}
+                  <ImageUploadField
+                    label={isRtl ? 'صورة أسطول الصهاريج والنقل' : 'Fleet Logistics Visual'}
+                    value={draftSettings.dieselFleetImageUrl || 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80'}
+                    onChange={(val) => {
+                      setDraftSettings((prev) => ({ ...prev, dieselFleetImageUrl: val }));
+                      showFeedback(isRtl ? 'تم تحديث صورة أسطول الديزل!' : 'Diesel fleet image updated!');
+                    }}
+                    aspectRatio="landscape"
+                    placeholderText={isRtl ? 'اختر صورة الأسطول من الاستوديو' : 'Select fleet image from library'}
+                  />
+
+                  {/* About Page Image */}
+                  <ImageUploadField
+                    label={isRtl ? 'صورة صفحة من نحن والرؤية' : 'About Us Narrative Visual'}
+                    value={draftSettings.aboutImageUrl || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80'}
+                    onChange={(val) => {
+                      setDraftSettings((prev) => ({ ...prev, aboutImageUrl: val }));
+                      showFeedback(isRtl ? 'تم تحديث صورة من نحن!' : 'About image updated!');
+                    }}
+                    aspectRatio="landscape"
+                    placeholderText={isRtl ? 'اختر صورة من نحن من الاستوديو' : 'Select about image from library'}
+                  />
+                </div>
+              </div>
+
+              {/* 5. Fuel Stations Gallery */}
+              <div className="bg-[#101010] border border-[#222] rounded-sm p-6 space-y-4">
+                <div className="flex items-center justify-between border-b border-[#1F1F1F] pb-3">
+                  <div>
+                    <h3 className="text-sm font-bold text-[#E2C98A] flex items-center gap-2">
+                      <Layers className="w-4 h-4 text-[#C8A45D]" />
+                      <span>{isRtl ? '5. صور شبكة محطات الوقود' : '5. Fuel Stations Network Photos'}</span>
+                    </h3>
+                    <p className="text-[11px] text-[#777]">
+                      {isRtl ? 'تعديل الصور المعروضة لبطاقات ومواقع محطات الوقود — يمكنك استبدال أي صورة من الاستوديو مباشرة' : 'Update imagery displayed across the fuel station cards'}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setActiveTab('stations')}
+                    className="text-xs font-bold text-[#C8A45D] hover:underline cursor-pointer"
+                  >
+                    {isRtl ? 'إدارة المحطات كاملة &larr;' : 'Manage Stations &rarr;'}
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                  {stations.map((st) => (
+                    <div key={st.id} className="bg-[#141414] border border-[#262626] rounded-sm p-4 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold text-[#F4F1E9] truncate max-w-[180px]">{isRtl ? st.nameAr : st.nameEn}</span>
+                        <span className="text-[10px] text-[#888]">{isRtl ? st.cityAr : st.cityEn}</span>
+                      </div>
+                      <ImageUploadField
+                        label={isRtl ? `صورة: ${st.nameAr}` : `Photo: ${st.nameEn}`}
+                        value={st.imageUrl || 'https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=800&q=80'}
+                        onChange={async (newUrl) => {
+                          const updated = { ...st, imageUrl: newUrl };
+                          setStations((prev) =>
+                            prev.map((item) => (item.id === st.id ? updated : item))
+                          );
+                          await saveStation(updated);
+                          showFeedback(isRtl ? `تم تحديث صورة محطة "${st.nameAr}" من الاستوديو وحفظها بنجاح!` : 'Station photo updated from gallery!');
+                        }}
+                        aspectRatio="landscape"
+                        placeholderText={isRtl ? 'اختر صورة المحطة من الاستوديو' : 'Select station photo from photo library'}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* 6. Car Wash Branches Gallery */}
+              <div className="bg-[#101010] border border-[#222] rounded-sm p-6 space-y-4">
+                <div className="flex items-center justify-between border-b border-[#1F1F1F] pb-3">
+                  <div>
+                    <h3 className="text-sm font-bold text-[#E2C98A] flex items-center gap-2">
+                      <Building className="w-4 h-4 text-[#C8A45D]" />
+                      <span>{isRtl ? '6. صور فروع ومراكز المغاسل' : '6. Car Wash Branches Photos'}</span>
+                    </h3>
+                    <p className="text-[11px] text-[#777]">
+                      {isRtl ? 'تعديل الصور المعروضة لمراكز وفروع المغاسل والعناية بالمركبات من الاستوديو' : 'Update branches imagery from photo library'}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setActiveTab('carwash')}
+                    className="text-xs font-bold text-[#C8A45D] hover:underline cursor-pointer"
+                  >
+                    {isRtl ? 'إدارة الفروع &larr;' : 'Manage Branches &rarr;'}
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                  {branches.map((br) => (
+                    <div key={br.id} className="bg-[#141414] border border-[#262626] rounded-sm p-4 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold text-[#F4F1E9] truncate max-w-[180px]">{isRtl ? br.nameAr : br.nameEn}</span>
+                        <span className="text-[10px] text-[#888]">{isRtl ? br.cityAr : br.cityEn}</span>
+                      </div>
+                      <ImageUploadField
+                        label={isRtl ? `صورة فرع: ${br.nameAr}` : `Branch: ${br.nameEn}`}
+                        value={br.imageUrl || 'https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?auto=format&fit=crop&w=1200&q=80'}
+                        onChange={async (newUrl) => {
+                          const updated = { ...br, imageUrl: newUrl };
+                          setBranches((prev) =>
+                            prev.map((item) => (item.id === br.id ? updated : item))
+                          );
+                          await saveCarWashBranch(updated);
+                          showFeedback(isRtl ? `تم تحديث صورة الفرع "${br.nameAr}" من الاستوديو!` : 'Branch photo updated from gallery!');
+                        }}
+                        aspectRatio="landscape"
+                        placeholderText={isRtl ? 'اختر صورة الفرع من الاستوديو' : 'Select branch photo from library'}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* 7. Strategic Partners Logos */}
+              <div className="bg-[#101010] border border-[#222] rounded-sm p-6 space-y-4">
+                <div className="flex items-center justify-between border-b border-[#1F1F1F] pb-3">
+                  <div>
+                    <h3 className="text-sm font-bold text-[#E2C98A] flex items-center gap-2">
+                      <Handshake className="w-4 h-4 text-[#C8A45D]" />
+                      <span>{isRtl ? '7. شعارات وصور الشركاء' : '7. Strategic Partner Logos'}</span>
+                    </h3>
+                    <p className="text-[11px] text-[#777]">
+                      {isRtl ? 'تحديث شعارات الشركاء برفع الشعار أو الصورة مباشرة من الاستوديو' : 'Update partner logos from photo library'}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setActiveTab('partners')}
+                    className="text-xs font-bold text-[#C8A45D] hover:underline cursor-pointer"
+                  >
+                    {isRtl ? 'إدارة الشركاء &larr;' : 'Manage Partners &rarr;'}
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {partners.map((prt) => (
+                    <div key={prt.id} className="bg-[#141414] border border-[#262626] rounded-sm p-3.5 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold text-[#F4F1E9] truncate max-w-[140px]">{isRtl ? prt.nameAr : prt.nameEn}</span>
+                      </div>
+                      <ImageUploadField
+                        label={isRtl ? `شعار: ${prt.nameAr}` : `Logo: ${prt.nameEn}`}
+                        value={prt.logoUrl || 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=400&q=80'}
+                        onChange={async (newUrl) => {
+                          const updated = { ...prt, logoUrl: newUrl };
+                          setPartners((prev) =>
+                            prev.map((item) => (item.id === prt.id ? updated : item))
+                          );
+                          await savePartner(updated);
+                          showFeedback(isRtl ? `تم تحديث شعار "${prt.nameAr}" من الاستوديو!` : 'Partner logo updated!');
+                        }}
+                        aspectRatio="square"
+                        placeholderText={isRtl ? 'اختر الشعار من الاستوديو' : 'Select logo from library'}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* 8. News Articles Images */}
+              <div className="bg-[#101010] border border-[#222] rounded-sm p-6 space-y-4">
+                <div className="flex items-center justify-between border-b border-[#1F1F1F] pb-3">
+                  <div>
+                    <h3 className="text-sm font-bold text-[#E2C98A] flex items-center gap-2">
+                      <Newspaper className="w-4 h-4 text-[#C8A45D]" />
+                      <span>{isRtl ? '8. صور مقالات وأخبار الشركة' : '8. News & Press Articles Images'}</span>
+                    </h3>
+                    <p className="text-[11px] text-[#777]">
+                      {isRtl ? 'تحديث الصور المصاحبة للأخبار والتوسعات برفع صورة مباشرة من الاستوديو' : 'Update news article imagery from photo library'}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setActiveTab('news')}
+                    className="text-xs font-bold text-[#C8A45D] hover:underline cursor-pointer"
+                  >
+                    {isRtl ? 'إدارة الأخبار &larr;' : 'Manage News &rarr;'}
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {news.map((item) => (
+                    <div key={item.id} className="bg-[#141414] border border-[#262626] rounded-sm p-4 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold text-[#F4F1E9] truncate max-w-[200px]">{isRtl ? item.titleAr : item.titleEn}</span>
+                      </div>
+                      <ImageUploadField
+                        label={isRtl ? `صورة المقال` : `Article Visual`}
+                        value={item.imageUrl || 'https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=800&q=80'}
+                        onChange={async (newUrl) => {
+                          const updated = { ...item, imageUrl: newUrl };
+                          setNews((prev) =>
+                            prev.map((n) => (n.id === item.id ? updated : n))
+                          );
+                          await saveNewsArticle(updated);
+                          showFeedback(isRtl ? `تم تحديث صورة الخبر من الاستوديو!` : 'Article image updated!');
+                        }}
+                        aspectRatio="landscape"
+                        placeholderText={isRtl ? 'اختر صورة المقال من الاستوديو' : 'Select article photo from library'}
+                      />
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -690,6 +1297,98 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   <Save className="w-3.5 h-3.5" />
                   <span>{isRtl ? 'حفظ البيانات' : 'Save'}</span>
                 </button>
+              </div>
+
+              {/* Website Logo & Visual Identity */}
+              <div className="bg-[#101010] border border-[#C8A45D]/40 rounded-sm p-6 space-y-4 shadow-[0_4px_20px_rgba(200,164,93,0.08)]">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[#1F1F1F] pb-3 gap-2">
+                  <div>
+                    <h3 className="text-sm font-bold text-[#E2C98A] flex items-center gap-2">
+                      <Sparkles className="w-4 h-4 text-[#C8A45D]" />
+                      <span>{isRtl ? 'شعار وهوية الموقع (Website Logo & Identity)' : 'Website Logo & Brand Graphics'}</span>
+                    </h3>
+                    <p className="text-[11px] text-[#777]">
+                      {isRtl ? 'يمكنك رفع شعار جديد من ألبوم/استوديو الصور بهاتفك أو حاسوبك في أي وقت — التعديل فوري وشامل لكافة صفحات الموقع' : 'Upload and replace the official brand logo from device library'}
+                    </p>
+                  </div>
+                  <span className="text-[10px] px-2 py-0.5 bg-[#181818] text-[#C8A45D] font-mono rounded border border-[#C8A45D]/30 w-fit">
+                    {isRtl ? 'رفع مباشر من الاستوديو' : 'Direct Photo Upload'}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                  <div className="lg:col-span-7 space-y-4">
+                    <ImageUploadField
+                      label={isRtl ? 'صورة الشعار (رفع مباشر من الاستوديو أو إدخال رابط)' : 'Logo Image (Upload from studio)'}
+                      value={draftSettings.logoImageUrl || ''}
+                      onChange={(val) => {
+                        setDraftSettings((prev) => ({ ...prev, logoImageUrl: val }));
+                        showFeedback(isRtl ? 'تم تحديث الشعار من الاستوديو! اضغط حفظ في الأعلى للاعتماد' : 'Logo updated! Click Save Changes above.');
+                      }}
+                      aspectRatio="landscape"
+                      placeholderText={isRtl ? 'اضغط لاختيار الشعار من الاستوديو / ألبوم الصور' : 'Select logo image from studio library'}
+                    />
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                      <div className="space-y-1">
+                        <label className="text-[11px] font-semibold text-[#888]">
+                          {isRtl ? 'اسم البراند النصي بجانب الشعار' : 'Brand Text Label'}
+                        </label>
+                        <input
+                          type="text"
+                          value={draftSettings.logoText || ''}
+                          onChange={(e) => setDraftSettings({ ...draftSettings, logoText: e.target.value })}
+                          placeholder="RM STAR"
+                          className="w-full bg-[#161616] border border-[#2E2E2E] focus:border-[#C8A45D] rounded-sm px-3 py-1.5 text-xs text-[#F4F1E9] focus:outline-none"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-[11px] font-semibold text-[#888]">
+                          {isRtl ? 'الوصف الفرعي للشعار' : 'Logo Subtitle'}
+                        </label>
+                        <input
+                          type="text"
+                          value={draftSettings.logoSubtitle || ''}
+                          onChange={(e) => setDraftSettings({ ...draftSettings, logoSubtitle: e.target.value })}
+                          placeholder="Energy • Stations • Care"
+                          className="w-full bg-[#161616] border border-[#2E2E2E] focus:border-[#C8A45D] rounded-sm px-3 py-1.5 text-xs text-[#F4F1E9] focus:outline-none"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Live Interactive Preview Box */}
+                  <div className="lg:col-span-5 bg-[#0A0A0A] border border-[#252525] rounded-sm p-4 space-y-3">
+                    <div className="flex items-center justify-between border-b border-[#1A1A1A] pb-2">
+                      <span className="text-[11px] font-bold text-[#AAA] flex items-center gap-1.5">
+                        <Eye className="w-3.5 h-3.5 text-[#C8A45D]" />
+                        <span>{isRtl ? 'معاينة حية للشعار الحالي' : 'Live Logo Preview'}</span>
+                      </span>
+                      {draftSettings.logoImageUrl && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setDraftSettings((prev) => ({ ...prev, logoImageUrl: '' }));
+                            showFeedback(isRtl ? 'تمت العودة لنجمة آر إم ستار الهندسية الافتراضية' : 'Restored default geometric star logo');
+                          }}
+                          className="text-[10px] text-amber-400 hover:underline cursor-pointer"
+                        >
+                          {isRtl ? 'استعادة الشعار الافتراضي' : 'Reset to default'}
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="bg-[#121212] border border-[#1E1E1E] rounded p-4 flex flex-col items-center justify-center min-h-[110px] space-y-2">
+                      <Logo size="lg" settings={draftSettings} />
+                    </div>
+
+                    <div className="text-[10px] text-[#777] leading-relaxed">
+                      {isRtl
+                        ? 'إذا رفعت صورة شعار جديدة ستظهر مباشرة في أعلى وأسفل كافة صفحات الموقع ولوحة التحكم. إذا فرّغت الصورة، سيعود تلقائياً الشعار الذهبي الهندسي الأيقوني.'
+                        : 'Uploaded image renders across header, footer, and admin header. Clearing the image restores default geometric emblem.'}
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-[#101010] border border-[#222] p-6 rounded-sm">
@@ -897,25 +1596,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 </div>
 
                 {/* Hero Image URL & Preview */}
-                <div className="space-y-2 pt-2 border-t border-[#222]">
-                  <label className="text-xs font-bold text-[#A6A6A6] flex items-center justify-between">
-                    <span>{isRtl ? 'رابط صورة خلفية الهيرو (Hero Image URL)' : 'Hero Background Image URL'}</span>
-                    <span className="text-[10px] text-[#777]">{isRtl ? 'صورة شاحنة صهريج أو أسطول ديزل بجودة فائقة' : 'High quality diesel fleet or tanker truck'}</span>
-                  </label>
-                  <div className="flex gap-3">
-                    <input
-                      type="text"
-                      value={draftSettings.heroImageUrl || ''}
-                      onChange={(e) => setDraftSettings({ ...draftSettings, heroImageUrl: e.target.value })}
-                      className="flex-1 bg-[#161616] border border-[#2E2E2E] rounded-sm px-3 py-2 text-xs text-[#F4F1E9] font-mono focus:outline-none"
-                      placeholder="https://images.unsplash.com/..."
-                    />
-                    {draftSettings.heroImageUrl && (
-                      <div className="w-16 h-10 rounded-sm overflow-hidden border border-[#333] shrink-0">
-                        <img src={draftSettings.heroImageUrl} alt="Hero Preview" className="w-full h-full object-cover" />
-                      </div>
-                    )}
-                  </div>
+                <div className="pt-2 border-t border-[#222]">
+                  <ImageUploadField
+                    label={isRtl ? 'صورة خلفية الهيرو الرئيسية (رفع من الاستوديو أو الجهاز)' : 'Hero Background Image'}
+                    value={draftSettings.heroImageUrl || ''}
+                    onChange={(val) => setDraftSettings({ ...draftSettings, heroImageUrl: val })}
+                    aspectRatio="banner"
+                    placeholderText={isRtl ? 'اختر صورة الهيرو من استوديو هاتفك أو جهازك' : 'Select hero image from studio'}
+                  />
                 </div>
 
                 {/* Metrics / Counters */}
@@ -976,6 +1664,91 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                         onChange={(e) => setDraftSettings({ ...draftSettings, metric3LabelAr: e.target.value })}
                         placeholder="العنوان بالعربي"
                         className="w-full bg-[#181818] border border-[#333] rounded px-2 py-1 text-[11px] text-[#CCC]"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Strategic Sectors Editor in Hero Tab */}
+                <div className="pt-4 border-t border-[#222] space-y-4">
+                  <h4 className="text-xs font-bold text-[#E2C98A]">{isRtl ? 'شرائح قطاعات الأعمال الاستراتيجية الثلاثة (الصفحة الرئيسية)' : 'Three Strategic Business Sectors Cards'}</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {/* Sector 1 */}
+                    <div className="p-3.5 bg-[#141414] border border-[#262626] rounded-sm space-y-2">
+                      <span className="text-xs font-bold text-[#F4F1E9] block">{isRtl ? 'القطاع 1: الديزل' : 'Sector 1: Diesel'}</span>
+                      <input
+                        type="text"
+                        value={draftSettings.sector1TitleAr || ''}
+                        onChange={(e) => setDraftSettings({ ...draftSettings, sector1TitleAr: e.target.value })}
+                        placeholder="عنوان القطاع..."
+                        className="w-full bg-[#181818] border border-[#333] rounded px-2.5 py-1.5 text-xs text-[#F4F1E9]"
+                      />
+                      <textarea
+                        rows={2}
+                        value={draftSettings.sector1DescAr || ''}
+                        onChange={(e) => setDraftSettings({ ...draftSettings, sector1DescAr: e.target.value })}
+                        placeholder="وصف القطاع..."
+                        className="w-full bg-[#181818] border border-[#333] rounded px-2.5 py-1.5 text-xs text-[#AAA]"
+                      />
+                      <ImageUploadField
+                        label={isRtl ? 'صورة القطاع 1' : 'Sector 1 Photo'}
+                        value={draftSettings.sector1ImageUrl || ''}
+                        onChange={(val) => setDraftSettings({ ...draftSettings, sector1ImageUrl: val })}
+                        aspectRatio="landscape"
+                        placeholderText={isRtl ? 'اختر صورة من الاستوديو' : 'Pick from studio'}
+                        compact
+                      />
+                    </div>
+                    {/* Sector 2 */}
+                    <div className="p-3.5 bg-[#141414] border border-[#262626] rounded-sm space-y-2">
+                      <span className="text-xs font-bold text-[#F4F1E9] block">{isRtl ? 'القطاع 2: المحطات' : 'Sector 2: Stations'}</span>
+                      <input
+                        type="text"
+                        value={draftSettings.sector2TitleAr || ''}
+                        onChange={(e) => setDraftSettings({ ...draftSettings, sector2TitleAr: e.target.value })}
+                        placeholder="عنوان القطاع..."
+                        className="w-full bg-[#181818] border border-[#333] rounded px-2.5 py-1.5 text-xs text-[#F4F1E9]"
+                      />
+                      <textarea
+                        rows={2}
+                        value={draftSettings.sector2DescAr || ''}
+                        onChange={(e) => setDraftSettings({ ...draftSettings, sector2DescAr: e.target.value })}
+                        placeholder="وصف القطاع..."
+                        className="w-full bg-[#181818] border border-[#333] rounded px-2.5 py-1.5 text-xs text-[#AAA]"
+                      />
+                      <ImageUploadField
+                        label={isRtl ? 'صورة القطاع 2' : 'Sector 2 Photo'}
+                        value={draftSettings.sector2ImageUrl || ''}
+                        onChange={(val) => setDraftSettings({ ...draftSettings, sector2ImageUrl: val })}
+                        aspectRatio="landscape"
+                        placeholderText={isRtl ? 'اختر صورة من الاستوديو' : 'Pick from studio'}
+                        compact
+                      />
+                    </div>
+                    {/* Sector 3 */}
+                    <div className="p-3.5 bg-[#141414] border border-[#262626] rounded-sm space-y-2">
+                      <span className="text-xs font-bold text-[#F4F1E9] block">{isRtl ? 'القطاع 3: المغاسل' : 'Sector 3: Car Wash'}</span>
+                      <input
+                        type="text"
+                        value={draftSettings.sector3TitleAr || ''}
+                        onChange={(e) => setDraftSettings({ ...draftSettings, sector3TitleAr: e.target.value })}
+                        placeholder="عنوان القطاع..."
+                        className="w-full bg-[#181818] border border-[#333] rounded px-2.5 py-1.5 text-xs text-[#F4F1E9]"
+                      />
+                      <textarea
+                        rows={2}
+                        value={draftSettings.sector3DescAr || ''}
+                        onChange={(e) => setDraftSettings({ ...draftSettings, sector3DescAr: e.target.value })}
+                        placeholder="وصف القطاع..."
+                        className="w-full bg-[#181818] border border-[#333] rounded px-2.5 py-1.5 text-xs text-[#AAA]"
+                      />
+                      <ImageUploadField
+                        label={isRtl ? 'صورة القطاع 3' : 'Sector 3 Photo'}
+                        value={draftSettings.sector3ImageUrl || ''}
+                        onChange={(val) => setDraftSettings({ ...draftSettings, sector3ImageUrl: val })}
+                        aspectRatio="landscape"
+                        placeholderText={isRtl ? 'اختر صورة من الاستوديو' : 'Pick from studio'}
+                        compact
                       />
                     </div>
                   </div>
@@ -1120,6 +1893,27 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     placeholder="وصف إمكانيات الأسطول..."
                   />
                 </div>
+
+                {/* Diesel Images */}
+                <div className="pt-4 border-t border-[#222] space-y-4">
+                  <h4 className="text-xs font-bold text-[#E2C98A]">{isRtl ? 'صور صفحة توريد ونقل الديزل (رفع من الاستوديو أو الجهاز)' : 'Diesel Page Images'}</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <ImageUploadField
+                      label={isRtl ? 'صورة المواصفات الفنية والبنية التحتية' : 'Specs & Infrastructure Image'}
+                      value={draftSettings.dieselSpecsImageUrl || ''}
+                      onChange={(val) => setDraftSettings({ ...draftSettings, dieselSpecsImageUrl: val })}
+                      aspectRatio="landscape"
+                      placeholderText={isRtl ? 'اختر صورة المواصفات من الاستوديو' : 'Pick specs photo'}
+                    />
+                    <ImageUploadField
+                      label={isRtl ? 'صورة أسطول النقل والصهاريج' : 'Logistics Fleet Image'}
+                      value={draftSettings.dieselFleetImageUrl || ''}
+                      onChange={(val) => setDraftSettings({ ...draftSettings, dieselFleetImageUrl: val })}
+                      aspectRatio="landscape"
+                      placeholderText={isRtl ? 'اختر صورة الأسطول من الاستوديو' : 'Pick fleet photo'}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           )}
@@ -1262,14 +2056,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   </div>
                 </div>
 
-                {/* About Image URL */}
-                <div className="space-y-1.5 pt-2 border-t border-[#222]">
-                  <label className="text-xs font-bold text-[#A6A6A6]">{isRtl ? 'رابط صورة قسم من نحن' : 'About Image URL'}</label>
-                  <input
-                    type="text"
+                {/* About Image */}
+                <div className="pt-2 border-t border-[#222]">
+                  <ImageUploadField
+                    label={isRtl ? 'صورة قسم من نحن والرؤية المؤسسية (رفع من الاستوديو أو الجهاز)' : 'About Us Section Visual'}
                     value={draftSettings.aboutImageUrl || ''}
-                    onChange={(e) => setDraftSettings({ ...draftSettings, aboutImageUrl: e.target.value })}
-                    className="w-full bg-[#161616] border border-[#2E2E2E] rounded-sm px-3 py-2 text-xs text-[#F4F1E9] font-mono"
+                    onChange={(val) => setDraftSettings({ ...draftSettings, aboutImageUrl: val })}
+                    aspectRatio="landscape"
+                    placeholderText={isRtl ? 'اختر صورة من نحن من استوديو هاتفك أو جهازك' : 'Select about visual from photo library'}
                   />
                 </div>
               </div>
@@ -1371,12 +2165,12 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                         />
                       </div>
                       <div className="sm:col-span-2">
-                        <label className="text-xs text-[#AAA] block mb-1">{isRtl ? 'رابط صورة المحطة' : 'Image URL'}</label>
-                        <input
-                          type="text"
+                        <ImageUploadField
+                          label={isRtl ? 'صورة المحطة (رفع من الاستوديو أو الجهاز)' : 'Station Photo'}
                           value={editingStation.imageUrl || ''}
-                          onChange={(e) => setEditingStation({ ...editingStation, imageUrl: e.target.value })}
-                          className="w-full bg-[#181818] border border-[#333] rounded px-3 py-2 text-xs text-[#FFF] font-mono"
+                          onChange={(val) => setEditingStation({ ...editingStation, imageUrl: val })}
+                          aspectRatio="landscape"
+                          placeholderText={isRtl ? 'اختر صورة المحطة من استوديو هاتفك' : 'Select station photo from gallery'}
                         />
                       </div>
                     </div>
@@ -1519,20 +2313,20 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                         />
                       </div>
                       <div className="sm:col-span-2">
-                        <label className="text-xs text-[#AAA] block mb-1">{isRtl ? 'رابط صورة الباقة' : 'Image URL'}</label>
-                        <input
-                          type="text"
+                        <ImageUploadField
+                          label={isRtl ? 'صورة باقة الخدمة (رفع من الاستوديو أو الجهاز)' : 'Service Package Photo'}
                           value={editingService.imageUrl || ''}
-                          onChange={(e) => setEditingService({ ...editingService, imageUrl: e.target.value })}
-                          className="w-full bg-[#181818] border border-[#333] rounded px-3 py-2 text-xs text-[#FFF] font-mono"
+                          onChange={(val) => setEditingService({ ...editingService, imageUrl: val })}
+                          aspectRatio="landscape"
+                          placeholderText={isRtl ? 'اختر صورة الباقة من استوديو هاتفك' : 'Select package photo from gallery'}
                         />
                       </div>
                     </div>
                     <div className="flex justify-end gap-2 pt-2">
-                      <button type="button" onClick={() => setEditingService(null)} className="px-3 py-1.5 bg-[#222] text-xs font-bold rounded">
+                      <button type="button" onClick={() => setEditingService(null)} className="px-3 py-1.5 bg-[#222] text-xs font-bold rounded cursor-pointer">
                         {isRtl ? 'إلغاء' : 'Cancel'}
                       </button>
-                      <button type="submit" className="px-4 py-1.5 bg-[#C8A45D] text-[#080808] text-xs font-bold rounded">
+                      <button type="submit" className="px-4 py-1.5 bg-[#C8A45D] text-[#080808] text-xs font-bold rounded cursor-pointer">
                         {isRtl ? 'حفظ الباقة' : 'Save'}
                       </button>
                     </div>
@@ -1541,13 +2335,26 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {services.map((srv) => (
-                    <div key={srv.id} className="p-4 bg-[#101010] border border-[#222] rounded-sm space-y-2">
-                      <h4 className="font-bold text-xs text-[#F4F1E9]">{srv.nameAr}</h4>
+                    <div key={srv.id} className="p-4 bg-[#101010] border border-[#222] rounded-sm space-y-2.5">
+                      {srv.imageUrl && (
+                        <div className="h-28 rounded-sm overflow-hidden border border-[#2B2B2B]">
+                          <img src={srv.imageUrl} alt={srv.nameAr} className="w-full h-full object-cover" />
+                        </div>
+                      )}
+                      <div className="flex items-center justify-between">
+                        <h4 className="font-bold text-xs text-[#F4F1E9] truncate">{srv.nameAr}</h4>
+                        <span className="text-[10px] text-[#C8A45D] font-mono">{srv.duration}</span>
+                      </div>
                       <p className="text-[11px] text-[#888] line-clamp-2">{srv.descriptionAr}</p>
-                      <div className="text-[10px] text-[#C8A45D]">{srv.duration}</div>
                       <div className="flex items-center justify-between pt-2 border-t border-[#1C1C1C]">
-                        <button onClick={() => setEditingService(srv)} className="text-xs text-[#E2C98A] cursor-pointer">{isRtl ? 'تعديل' : 'Edit'}</button>
-                        <button onClick={() => handleDeleteService(srv.id)} className="text-xs text-red-400 cursor-pointer">{isRtl ? 'حذف' : 'Delete'}</button>
+                        <button onClick={() => setEditingService(srv)} className="text-xs text-[#E2C98A] flex items-center gap-1 cursor-pointer">
+                          <Edit3 className="w-3.5 h-3.5" />
+                          <span>{isRtl ? 'تعديل' : 'Edit'}</span>
+                        </button>
+                        <button onClick={() => handleDeleteService(srv.id)} className="text-xs text-red-400 flex items-center gap-1 cursor-pointer">
+                          <Trash2 className="w-3.5 h-3.5" />
+                          <span>{isRtl ? 'حذف' : 'Delete'}</span>
+                        </button>
                       </div>
                     </div>
                   ))}
@@ -1610,12 +2417,21 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                           className="w-full bg-[#181818] border border-[#333] rounded px-3 py-2 text-xs text-[#FFF]"
                         />
                       </div>
+                      <div className="sm:col-span-2">
+                        <ImageUploadField
+                          label={isRtl ? 'صورة المركز أو الفرع (رفع من الاستوديو أو الجهاز)' : 'Branch Photo'}
+                          value={editingBranch.imageUrl || ''}
+                          onChange={(val) => setEditingBranch({ ...editingBranch, imageUrl: val })}
+                          aspectRatio="landscape"
+                          placeholderText={isRtl ? 'اختر صورة الفرع من استوديو هاتفك' : 'Select branch photo from gallery'}
+                        />
+                      </div>
                     </div>
                     <div className="flex justify-end gap-2 pt-2">
-                      <button type="button" onClick={() => setEditingBranch(null)} className="px-3 py-1.5 bg-[#222] text-xs font-bold rounded">
+                      <button type="button" onClick={() => setEditingBranch(null)} className="px-3 py-1.5 bg-[#222] text-xs font-bold rounded cursor-pointer">
                         {isRtl ? 'إلغاء' : 'Cancel'}
                       </button>
-                      <button type="submit" className="px-4 py-1.5 bg-[#C8A45D] text-[#080808] text-xs font-bold rounded">
+                      <button type="submit" className="px-4 py-1.5 bg-[#C8A45D] text-[#080808] text-xs font-bold rounded cursor-pointer">
                         {isRtl ? 'حفظ الفرع' : 'Save'}
                       </button>
                     </div>
@@ -1689,12 +2505,12 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       />
                     </div>
                     <div className="sm:col-span-2">
-                      <label className="text-xs text-[#AAA] block mb-1">{isRtl ? 'رابط الشعار أو الصورة (Logo URL)' : 'Logo Image URL'}</label>
-                      <input
-                        type="text"
+                      <ImageUploadField
+                        label={isRtl ? 'شعار أو صورة الشريك (رفع من الاستوديو أو الجهاز)' : 'Partner Logo'}
                         value={editingPartner.logoUrl || ''}
-                        onChange={(e) => setEditingPartner({ ...editingPartner, logoUrl: e.target.value })}
-                        className="w-full bg-[#181818] border border-[#333] rounded px-3 py-2 text-xs text-[#FFF] font-mono"
+                        onChange={(val) => setEditingPartner({ ...editingPartner, logoUrl: val })}
+                        aspectRatio="square"
+                        placeholderText={isRtl ? 'اختر الشعار من استوديو هاتفك أو جهازك' : 'Select logo from photo library'}
                       />
                     </div>
                   </div>
@@ -1795,13 +2611,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                         className="w-full bg-[#181818] border border-[#333] rounded px-3 py-2 text-xs text-[#FFF]"
                       />
                     </div>
-                    <div>
-                      <label className="text-xs text-[#AAA] block mb-1">{isRtl ? 'رابط الصورة' : 'Image URL'}</label>
-                      <input
-                        type="text"
+                    <div className="sm:col-span-2">
+                      <ImageUploadField
+                        label={isRtl ? 'صورة المقال أو الخبر (رفع من الاستوديو أو الجهاز)' : 'Article Image'}
                         value={editingNews.imageUrl || ''}
-                        onChange={(e) => setEditingNews({ ...editingNews, imageUrl: e.target.value })}
-                        className="w-full bg-[#181818] border border-[#333] rounded px-3 py-2 text-xs text-[#FFF] font-mono"
+                        onChange={(val) => setEditingNews({ ...editingNews, imageUrl: val })}
+                        aspectRatio="landscape"
+                        placeholderText={isRtl ? 'اختر صورة المقال من استوديو هاتفك أو جهازك' : 'Select article photo from gallery'}
                       />
                     </div>
                   </div>

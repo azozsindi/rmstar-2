@@ -27,6 +27,9 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   // Brand & Identity
   companyNameAr: 'آر إم ستار لاستيراد وتوريد الديزل والخدمات البترولية',
   companyNameEn: 'RM STAR Diesel Import, Supply & Fuel Services',
+  logoImageUrl: '',
+  logoText: 'RM STAR',
+  logoSubtitle: 'Energy • Stations • Care',
   brandTaglineAr: 'شراكة تُبنى على الثقة',
   brandTaglineEn: 'Partnership Built on Trust',
   brandSubtitleAr: 'منظومة رائدة متخصصة في نقل وتوريد الوقود والديزل للشركات والمصانع، وتشغيل محطات الوقود ومراكز العناية بالمركبات.',

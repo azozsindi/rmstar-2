@@ -1,16 +1,45 @@
 import React from 'react';
+import { SiteSettings } from '../../types';
 
 interface LogoProps {
   className?: string;
   size?: 'sm' | 'md' | 'lg';
   showSubtitle?: boolean;
+  settings?: SiteSettings | null;
+  customLogoUrl?: string;
+  customText?: string;
+  customSubtitle?: string;
 }
 
-export const Logo: React.FC<LogoProps> = ({ className = '', size = 'md', showSubtitle = true }) => {
+export const Logo: React.FC<LogoProps> = ({
+  className = '',
+  size = 'md',
+  showSubtitle = true,
+  settings,
+  customLogoUrl,
+  customText,
+  customSubtitle,
+}) => {
+  const activeLogoUrl = customLogoUrl || settings?.logoImageUrl;
+  const brandName = customText || settings?.logoText || 'RM STAR';
+  const subtitle = customSubtitle || settings?.logoSubtitle || 'Energy • Stations • Care';
+
+  const [imageError, setImageError] = React.useState(false);
+
+  React.useEffect(() => {
+    setImageError(false);
+  }, [activeLogoUrl]);
+
   const iconSizes = {
     sm: 'w-7 h-7',
     md: 'w-10 h-10',
     lg: 'w-14 h-14',
+  };
+
+  const imageSizes = {
+    sm: 'h-8 sm:h-9 max-h-9 max-w-[170px]',
+    md: 'h-11 sm:h-12 max-h-12 max-w-[230px]',
+    lg: 'h-16 sm:h-20 max-h-20 max-w-[340px]',
   };
 
   const textSizes = {
@@ -25,6 +54,36 @@ export const Logo: React.FC<LogoProps> = ({ className = '', size = 'md', showSub
     lg: 'text-xs tracking-widest',
   };
 
+  // 1. If user uploaded a custom logo image from studio/device, display it with high fidelity
+  if (activeLogoUrl && activeLogoUrl.trim() !== '' && !imageError) {
+    return (
+      <div className={`flex items-center gap-3 select-none ${className}`}>
+        <img
+          src={activeLogoUrl}
+          alt={settings?.companyNameEn || brandName || 'RM STAR Logo'}
+          className={`${imageSizes[size]} object-contain drop-shadow-[0_2px_12px_rgba(200,164,93,0.35)] transition-all duration-300 hover:brightness-110`}
+          onError={() => {
+            setImageError(true);
+          }}
+        />
+        {/* If custom brand text is specified alongside the logo */}
+        {settings?.logoText && settings.logoText !== 'RM STAR' && (
+          <div className="flex flex-col justify-center items-start text-left" dir="ltr">
+            <span className={`text-[#F4F1E9] font-black font-serif-luxury leading-none ${textSizes[size]}`}>
+              {settings.logoText}
+            </span>
+            {showSubtitle && subtitle && (
+              <span className={`text-[#A6A6A6] uppercase font-medium mt-0.5 leading-tight ${subtitleSizes[size]}`} dir="ltr">
+                {subtitle}
+              </span>
+            )}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // 2. Default Designed Geometric 8-Pointed Star & Luxury Typography
   return (
     <div className={`flex items-center gap-3 select-none ${className}`}>
       {/* Geometric Star Emblem */}
@@ -84,15 +143,21 @@ export const Logo: React.FC<LogoProps> = ({ className = '', size = 'md', showSub
       {/* Corporate Typographic Branding - dir="ltr" ensures RM STAR is never inverted to STAR RM in RTL */}
       <div className="flex flex-col justify-center items-start text-left" dir="ltr">
         <div className="flex items-center gap-1.5 font-bold font-serif-luxury leading-none" dir="ltr">
-          <span className={`text-[#F4F1E9] font-extrabold ${textSizes[size]}`}>RM</span>
-          <span className={`gold-gradient-text font-black ${textSizes[size]}`}>STAR</span>
+          {brandName === 'RM STAR' ? (
+            <>
+              <span className={`text-[#F4F1E9] font-extrabold ${textSizes[size]}`}>RM</span>
+              <span className={`gold-gradient-text font-black ${textSizes[size]}`}>STAR</span>
+            </>
+          ) : (
+            <span className={`gold-gradient-text font-black ${textSizes[size]}`}>{brandName}</span>
+          )}
         </div>
-        {showSubtitle && (
+        {showSubtitle && subtitle && (
           <span
             className={`text-[#A6A6A6] uppercase font-medium mt-0.5 leading-tight ${subtitleSizes[size]}`}
             dir="ltr"
           >
-            Energy &bull; Stations &bull; Care
+            {subtitle}
           </span>
         )}
       </div>

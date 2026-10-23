@@ -2,14 +2,17 @@ import React, { useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useAuth } from '../../context/AuthContext';
 import { Shield, AlertCircle, Loader2, Lock, User, Eye, EyeOff, KeyRound, Sparkles } from 'lucide-react';
+import { Logo } from '../../components/common/Logo';
+import { SiteSettings } from '../../types';
 
 interface AdminLoginModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
+  settings?: SiteSettings;
 }
 
-export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({ isOpen, onClose, onSuccess }) => {
+export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({ isOpen, onClose, onSuccess, settings }) => {
   const { locale } = useLanguage();
   const isRtl = locale === 'ar';
   const { loginWithCredentials, loginError, clearError } = useAuth();
@@ -63,11 +66,11 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({ isOpen, onClos
 
         {/* Modal Header */}
         <div className="text-center space-y-2 mb-6">
-          <div className="w-12 h-12 rounded-sm bg-[#171717] border border-[#C8A45D]/40 mx-auto flex items-center justify-center text-[#E2C98A] shadow-[0_0_15px_rgba(200,164,93,0.15)]">
-            <Shield className="w-6 h-6 text-[#C8A45D]" />
+          <div className="flex justify-center mb-1">
+            <Logo size="md" settings={settings} />
           </div>
           <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#1A1A1A] border border-[#C8A45D]/30 text-[10px] text-[#E2C98A] font-mono uppercase tracking-wider">
-            <Sparkles className="w-3 h-3 text-[#C8A45D]" />
+            <Shield className="w-3 h-3 text-[#C8A45D]" />
             <span>RM STAR CONTROL SYSTEM</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-black text-[#F4F1E9] tracking-tight">

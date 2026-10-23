@@ -3,13 +3,16 @@ import { useLanguage } from '../../context/LanguageContext';
 import { Logo } from './Logo';
 import { Globe, Menu, X, Shield, ArrowRight, ArrowLeft } from 'lucide-react';
 
+import { SiteSettings } from '../../types';
+
 interface HeaderProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
   onOpenAdmin: () => void;
+  settings?: SiteSettings;
 }
 
-export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab, onOpenAdmin }) => {
+export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab, onOpenAdmin, settings }) => {
   const { locale, toggleLocale, t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -39,7 +42,7 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab, onOpenA
             className="cursor-pointer transition-transform hover:scale-[1.01] flex-shrink-0"
             onClick={() => handleNavClick('home')}
           >
-            <Logo size="md" />
+            <Logo size="md" settings={settings} />
           </div>
 
           {/* Desktop Navigation Links */}

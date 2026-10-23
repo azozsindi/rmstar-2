@@ -244,6 +244,7 @@ const MainContent: React.FC = () => {
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         onOpenAdmin={handleOpenAdmin}
+        settings={settings}
       />
 
       {/* Main Routed Page Content */}
@@ -299,7 +300,7 @@ const MainContent: React.FC = () => {
                 {t('quoteFormSubtitle')}
               </p>
             </div>
-            <QuotationForm />
+            <QuotationForm settings={settings} />
           </div>
         )}
 
@@ -320,6 +321,7 @@ const MainContent: React.FC = () => {
         isOpen={isAdminModalOpen}
         onClose={handleCloseAdminModal}
         onSuccess={handleAdminLoginSuccess}
+        settings={settings}
       />
 
       {/* Floating Instant WhatsApp Channel */}
